@@ -12,7 +12,6 @@ router = APIRouter(tags=["auth"])
 )
 async def route_registration(user_reg: UserCreate):
     new_user = await register_user(user_reg.login, user_reg.password)
-    print(new_user)
     return new_user
 
 

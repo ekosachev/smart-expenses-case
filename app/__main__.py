@@ -7,6 +7,9 @@ from src.logs import get_logger
 from src.database.db import db_create
 
 from src.routers.auth_router import router as auth_router
+from src.routers.expense import router as expense_router
+from src.routers.expense_categories import router as expense_categories_router
+from src.routers.vehicle import router as vehicle_router
 
 logger = get_logger(__name__)
 
@@ -35,6 +38,9 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(expense_router)
+app.include_router(expense_categories_router)
+app.include_router(vehicle_router)
 
 
 if __name__ == "__main__":
