@@ -4,6 +4,7 @@ from typing import Optional, Set
 
 from sqlalchemy import Date, DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.util.typing import is_a_type
 
 from .base import Base
 
@@ -24,7 +25,6 @@ class User(Base):
         secondary="companies_to_users", back_populates="employees"
     )
 
-    assigned_vehicles: Mapped[Set["Vehicle"]] = relationship(back_populates="driver")
     expenses: Mapped[Set["Expense"]] = relationship(back_populates="driver")
 
 
@@ -95,13 +95,6 @@ class VehicleType(enum.StrEnum):
     special = "special"
 
 
-class FuelType(enum.StrEnum):
-    petrol = "petrol"
-    diesel = "diesel"
-    gas = "gas"
-    electric = "electric"
-
-
 class Vehicle(Base):
     __tablename__ = "vehicles"
 
@@ -113,29 +106,20 @@ class Vehicle(Base):
 
     # Юридическая информация
     license_plate: Mapped[str] = mapped_column(String(9))
-    vin: Mapped[str | None] = mapped_column(String(17), unique=True)
-    registration_certificate: Mapped[str | None] = mapped_column(String(25))
-    insurance_policy: Mapped[str | None] = mapped_column(String(20))
 
     # Технические характеристики
     make: Mapped[str] = mapped_column(String(50))
     model: Mapped[str] = mapped_column(String(50))
     year: Mapped[int]
     vehicle_type: Mapped[VehicleType]
-    fuel_type: Mapped[FuelType]
     carrying_capacity: Mapped[int | None]
     passenger_capacity: Mapped[int | None]
     fuel_consumption_rate: Mapped[float | None]
 
     # Эксплуатационные данные
     current_mileage: Mapped[int | None]
-    last_maintenance_date: Mapped[date | None]
-    next_maintenance_date: Mapped[date | None]
     initial_cost: Mapped[float | None]
-    residual_value: Mapped[float | None]
-
-    # Связи с другими сущностями
-    current_driver_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
+    rent_price: Mapped[float | None]
 
     # Системные метаданные
     created_at: Mapped[date] = mapped_column(server_default=func.current_date())
@@ -146,7 +130,6 @@ class Vehicle(Base):
 
     # ORM-отношения
     company: Mapped[Company] = relationship(back_populates="vehicles")
-    driver: Mapped[User] = relationship(back_populates="assigned_vehicles")
     creator: Mapped[User] = relationship()
     expenses: Mapped[Set["Expense"]] = relationship(back_populates="vehicle")
 
@@ -179,7 +162,6 @@ class Expense(Base):
 
     # Финансовые данные
     amount: Mapped[float]
-    currency: Mapped[str] = mapped_column(String(3), default="RUB")
 
     # Временные метки
     expense_date: Mapped[date] = mapped_column(default=func.current_date())
@@ -197,17 +179,10 @@ class Expense(Base):
 
     # Описательные поля
     description: Mapped[str | None] = mapped_column(String(255))
-    document_ref: Mapped[str | None] = mapped_column(
-        String(100)
-    )  # Номер чека/документа
-    location: Mapped[str | None] = mapped_column(
-        String(100)
-    )  # Место совершения расхода
-    source: Mapped[str] = mapped_column(String(50))  # Источник данных
 
     # Статус
-    status: Mapped[str] = mapped_column(
-        String(20), default="pending"
+    status: Mapped[ExpenseStatus] = mapped_column(
+        String(20), default=ExpenseStatus.pending
     )  # pending/approved/rejected
 
     # ORM-отношения

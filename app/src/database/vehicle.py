@@ -21,7 +21,7 @@ class VehicleRepository(
         """Поиск ТС по госномеру с учетом активности"""
         query = select(Vehicle).where(Vehicle.license_plate == plate)
 
-        if self.supports_soft_delete and not include_inactive:
+        if not include_inactive:
             query = query.where(Vehicle.is_active == True)
 
         result = await session.execute(query)

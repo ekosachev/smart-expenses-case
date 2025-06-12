@@ -12,10 +12,6 @@ class ExpenseCreate(BaseModel):
     vehicle_id: int
     driver_id: int
     description: Optional[str] = Field(None, max_length=255)
-    document_ref: Optional[str] = Field(None, max_length=100)
-    location: Optional[str] = Field(None, max_length=100)
-    source: str = Field("manual", max_length=50)
-    currency: str = Field("RUB", max_length=3)
 
 
 class ExpenseData(ExpenseCreate):
@@ -34,9 +30,5 @@ class ExpenseEdit(BaseModel):
     vehicle_id: Optional[int] = None
     driver_id: Optional[int] = None
     description: Optional[str] = Field(None, max_length=255)
-    document_ref: Optional[str] = Field(None, max_length=100)
-    location: Optional[str] = Field(None, max_length=100)
-    source: Optional[str] = Field(None, max_length=50)
-    currency: Optional[str] = Field(None, max_length=3)
     status: Optional[str] = None
     approver_id: Optional[int] = None
