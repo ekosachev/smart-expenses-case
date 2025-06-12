@@ -185,7 +185,6 @@ def generate_monthly_budget_table_func(db_path: str = os.path.join(os.path.pardi
     monthly_budget_df = pd.merge(actual_expenses_df, planned_budget_base_df, on=['ID_car', 'category_id'], how='left')
     
     # Заполняем NaN в planned_budget_rub (для машин, по которым не было данных для расчета средней)
-    # используя общий средний расход по всем машинам и категориям
     overall_avg_amount = all_relevant_expenses_df['amount'].mean()
     
     monthly_budget_df['planned_budget_rub'] = monthly_budget_df['avg_monthly_amount_per_car'].fillna(overall_avg_amount)
