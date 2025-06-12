@@ -1,127 +1,130 @@
-import pandas as pd
-import numpy as np
 import json
-from datetime import datetime, timedelta
-from typing import Literal, Optional, Union, Dict, List
 import sqlite3
-from abc import ABC, abstractmethod
+from datetime import datetime
+from typing import Dict, Any, List
 
-class DataSource(ABC):
-    @abstractmethod
-    def get_data(self) -> pd.DataFrame:
-        pass
-
-class SQLiteDataSource(DataSource):
+class SQLiteDataSource:
     def __init__(self, db_path: str):
         self.db_path = db_path
 
-    def get_data(self) -> pd.DataFrame:
+    def get_data(self) -> List[Dict[str, Any]]:
+        """Получение данных из SQLite базы данных"""
         conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        # Обновленный SQL-запрос с учетом структуры таблицы vehicles
         query = """
         SELECT 
-            e.date as 'Дата',
-            e.amount as 'Сумма',
-            c.name as 'Категория',
-            e.description as 'Описание'
+            e.date,
+            e.amount,
+            c.name as category,
+            e.description,
+            v.manufacturer || ' ' || v.model as vehicle_name,
+            e.ID_car
         FROM expenses e
-        LEFT JOIN categories c ON e.category_id = c.id
+        JOIN categories c ON e.category_id = c.id
+        JOIN vehicles v ON e.ID_car = v.id
+        ORDER BY e.date
         """
-        df = pd.read_sql_query(query, conn)
-        df['Дата'] = pd.to_datetime(df['Дата'])
+        
+        cursor.execute(query)
+        columns = [description[0] for description in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        
         conn.close()
-        return df
+        return data
 
-def create_data_source(source_type: str, **kwargs) -> DataSource:
-    """Фабрика для создания источника данных"""
-    if source_type.lower() == 'sqlite':
-        return SQLiteDataSource(kwargs['db_path'])
+def create_data_source(source_type: str, **kwargs) -> SQLiteDataSource:
+    """Создание источника данных"""
+    if source_type == 'sqlite':
+        return SQLiteDataSource(kwargs.get('db_path', 'expenses.db'))
     else:
         raise ValueError(f"Неподдерживаемый тип источника данных: {source_type}")
 
-def filter_by_period(df: pd.DataFrame, period: Literal['3d', '7d', '30d', '365d'], end_date: Optional[str]=None) -> pd.DataFrame:
-    if end_date:
-        end = pd.to_datetime(end_date)
-    else:
-        end = df['Дата'].max()
-    if period == '3d':
-        start = end - timedelta(days=2)
-    elif period == '7d':
-        start = end - timedelta(days=6)
-    elif period == '30d':
-        start = end - timedelta(days=29)
-    elif period == '365d':
-        start = end - timedelta(days=364)
-    else:
-        raise ValueError('Период должен быть одним из: 3d, 7d, 30d, 365d')
-    return df[(df['Дата'] >= start) & (df['Дата'] <= end)]
-
-def calc_period_stats(df: pd.DataFrame) -> dict:
-    if df.empty:
-        return {"пусто": True}
-    stats = {
-        "период": {
-            "начало": df['Дата'].min().strftime('%Y-%m-%d'),
-            "конец": df['Дата'].max().strftime('%Y-%m-%d'),
-            "количество_дней": (df['Дата'].max() - df['Дата'].min()).days + 1
-        },
-        "общая_сумма": float(df['Сумма'].sum()),
-        "средний_расход_в_день": float(df.groupby('Дата')['Сумма'].sum().mean()),
-        "медианный_расход": float(df['Сумма'].median()),
-        "категории": [],
-        "по_дням": []
+def get_dashboard_statistics(source_type: str = 'sqlite', **kwargs) -> Dict[str, Any]:
+    """Получение статистики для дашборда"""
+    data_source = create_data_source(source_type, **kwargs)
+    data = data_source.get_data()
+    
+    # Инициализация статистики
+    statistics = {
+        'category_statistics': {},
+        'vehicle_statistics': {},
+        'total_statistics': {
+            'total_amount': 0,
+            'average_amount': 0,
+            'max_amount': 0,
+            'min_amount': float('inf'),
+            'count': 0
+        }
     }
-    # По категориям
-    cat_stats = df.groupby('Категория')['Сумма'].agg(['count', 'sum', 'mean', 'min', 'max']).round(2)
-    for cat, row in cat_stats.iterrows():
-        stats['категории'].append({
-            "категория": cat,
-            "количество": int(row['count']),
-            "сумма": float(row['sum']),
-            "среднее": float(row['mean']),
-            "минимум": float(row['min']),
-            "максимум": float(row['max'])
-        })
-    # По дням
-    day_stats = df.groupby('Дата')['Сумма'].sum().reset_index()
-    for _, row in day_stats.iterrows():
-        stats['по_дням'].append({
-            "дата": row['Дата'].strftime('%Y-%m-%d'),
-            "сумма": float(row['Сумма'])
-        })
-    return stats
+    
+    # Обработка данных
+    for record in data:
+        category = record['category']
+        amount = float(record['amount'])
+        vehicle_name = record['vehicle_name']
+        
+        # Статистика по категориям
+        if category not in statistics['category_statistics']:
+            statistics['category_statistics'][category] = {
+                'total': 0,
+                'average': 0,
+                'max': 0,
+                'min': float('inf'),
+                'count': 0
+            }
+        
+        cat_stats = statistics['category_statistics'][category]
+        cat_stats['total'] += amount
+        cat_stats['count'] += 1
+        cat_stats['max'] = max(cat_stats['max'], amount)
+        cat_stats['min'] = min(cat_stats['min'], amount)
+        
+        # Статистика по транспортным средствам
+        if vehicle_name not in statistics['vehicle_statistics']:
+            statistics['vehicle_statistics'][vehicle_name] = {
+                'total': 0,
+                'average': 0,
+                'max': 0,
+                'min': float('inf'),
+                'count': 0
+            }
+        
+        veh_stats = statistics['vehicle_statistics'][vehicle_name]
+        veh_stats['total'] += amount
+        veh_stats['count'] += 1
+        veh_stats['max'] = max(veh_stats['max'], amount)
+        veh_stats['min'] = min(veh_stats['min'], amount)
+        
+        # Общая статистика
+        total_stats = statistics['total_statistics']
+        total_stats['total_amount'] += amount
+        total_stats['count'] += 1
+        total_stats['max_amount'] = max(total_stats['max_amount'], amount)
+        total_stats['min_amount'] = min(total_stats['min_amount'], amount)
+    
+    # Вычисление средних значений
+    for category in statistics['category_statistics']:
+        stats = statistics['category_statistics'][category]
+        stats['average'] = stats['total'] / stats['count'] if stats['count'] > 0 else 0
+    
+    for vehicle in statistics['vehicle_statistics']:
+        stats = statistics['vehicle_statistics'][vehicle]
+        stats['average'] = stats['total'] / stats['count'] if stats['count'] > 0 else 0
+    
+    total_stats = statistics['total_statistics']
+    total_stats['average_amount'] = total_stats['total_amount'] / total_stats['count'] if total_stats['count'] > 0 else 0
+    
+    return statistics
 
-def get_dashboard_statistics(
-    source_type: str = 'sqlite',
-    periods: List[str] = ['3d', '7d', '30d', '365d'],
-    end_date: Optional[str] = None,
-    **source_kwargs
-) -> dict:
-    """
-    Получение статистики для дашборда из базы данных
-    
-    Args:
-        source_type: Тип источника данных (пока только 'sqlite')
-        periods: Список периодов для анализа
-        end_date: Дата окончания периода (опционально)
-        **source_kwargs: Дополнительные параметры для источника данных
-            - для SQLite: db_path
-    """
-    data_source = create_data_source(source_type, **source_kwargs)
-    df = data_source.get_data()
-    
-    result = {}
-    for period in periods:
-        filtered = filter_by_period(df, period, end_date)
-        result[period] = calc_period_stats(filtered)
-    return result
+def save_statistics(statistics: Dict[str, Any], output_file: str = 'dashboard_statistics.json'):
+    """Сохранение статистики в JSON файл"""
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(statistics, f, ensure_ascii=False, indent=2)
 
-if __name__ == "__main__":
-    # Пример использования с базой данных
-    stats = get_dashboard_statistics(
-        source_type='sqlite',
-        db_path='expenses.db'
-    )
-    
-    # Сохраняем результаты
-    with open('dashboard_statistics.json', 'w', encoding='utf-8') as f:
-        json.dump(stats, f, ensure_ascii=False, indent=2) 
+if __name__ == '__main__':
+    # Пример использования
+    statistics = get_dashboard_statistics('sqlite', db_path='expenses.db')
+    save_statistics(statistics)
+    print(f"Статистика сохранена в файл dashboard_statistics.json") 
