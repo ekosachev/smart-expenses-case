@@ -3,3 +3,4 @@ app/src/__pycache__
 app/src/params/__pycache__
 app/venv
 db.env
+analyze/venv
