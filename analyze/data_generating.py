@@ -137,6 +137,77 @@ def update_total_mileage_func(db_path: str = os.path.join(os.path.pardir, 'data.
     conn.close()
     print('Общий пробег по каждой машине успешно обновлён!')
 
+def _check_expenses_table_schema(db_path: str):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("PRAGMA table_info(expenses)")
+    schema = cursor.fetchall()
+    print("\nСхема таблицы expenses:")
+    for col in schema:
+        print(col)
+    conn.close()
+
+def generate_monthly_budget_table_func(db_path: str = os.path.join(os.path.pardir, 'data.db')):
+    conn = sqlite3.connect(db_path)
+    
+    # Получаем расходы по категориям 1-8 и ID_car
+    query = """
+    SELECT
+        strftime('%Y', date) AS year,
+        strftime('%m', date) AS month,
+        ID_car,
+        amount
+    FROM expenses
+    WHERE category_id BETWEEN 1 AND 8;
+    """
+    
+    all_relevant_expenses_df = pd.read_sql_query(query, conn)
+    
+    if all_relevant_expenses_df.empty:
+        print("Нет данных для генерации ежемесячного бюджета.")
+        conn.close()
+        return
+
+    # Группируем для фактических расходов
+    actual_expenses_df = all_relevant_expenses_df.groupby(['year', 'month', 'ID_car'])['amount'].sum().reset_index()
+    actual_expenses_df.rename(columns={'amount': 'actual_expenses_rub'}, inplace=True)
+
+    # Рассчитываем средний расход на каждую машину по категориям 1-8 за весь период для планируемого бюджета
+    # Это будет нашей базовой "планируемой" суммой для каждой машины в месяц
+    planned_budget_base_df = all_relevant_expenses_df.groupby('ID_car')['amount'].mean().reset_index()
+    planned_budget_base_df.rename(columns={'amount': 'avg_monthly_amount_per_car'}, inplace=True)
+
+    # Объединяем фактические расходы с базовыми значениями планируемого бюджета
+    monthly_budget_df = pd.merge(actual_expenses_df, planned_budget_base_df, on='ID_car', how='left')
+    
+    # Заполняем NaN в planned_budget_rub (для машин, по которым не было данных для расчета средней)
+    # используя общий средний расход по всем машинам
+    overall_avg_amount = all_relevant_expenses_df['amount'].mean()
+    
+    monthly_budget_df['planned_budget_rub'] = monthly_budget_df['avg_monthly_amount_per_car'].fillna(overall_avg_amount)
+    
+    # Корректируем планируемый бюджет, чтобы он был чуть выше фактического, но не всегда
+    monthly_budget_df['planned_budget_rub'] = monthly_budget_df.apply(
+        lambda row: row['actual_expenses_rub'] * (1 + np.random.uniform(0.02, 0.10))
+                    if row['actual_expenses_rub'] > row['planned_budget_rub'] and np.random.random() < 0.7
+                    else row['planned_budget_rub'],
+        axis=1
+    )
+
+    # Добавляем столбец процента фактических трат от планируемых
+    monthly_budget_df['percentage_of_planned'] = (monthly_budget_df['actual_expenses_rub'] / monthly_budget_df['planned_budget_rub']) * 100
+    
+    # Выбираем и переименовываем столбцы для итоговой таблицы
+    final_budget_df = monthly_budget_df[['month', 'year', 'ID_car', 'planned_budget_rub', 'actual_expenses_rub', 'percentage_of_planned']]
+    final_budget_df.rename(columns={'month': 'Месяц', 'year': 'Год', 'ID_car': 'ID_машины', 'planned_budget_rub': 'Планируемый_бюджет_руб', 'actual_expenses_rub': 'Фактические_расходы_руб', 'percentage_of_planned': 'Процент_от_плана'}, inplace=True)
+    
+    # Сохраняем в новую таблицу monthly_budget
+    final_budget_df.to_sql('monthly_budget', conn, if_exists='replace', index=False)
+    
+    conn.commit()
+    conn.close()
+    print('Ежемесячный бюджет успешно рассчитан и сохранён в таблице monthly_budget.')
+
 # --- Функции из generate_expenses.py ---
 def generate_expenses_data_func(db_path: str = os.path.join(os.path.pardir, 'data.db')):
     np.random.seed(42)
@@ -243,11 +314,15 @@ def generate_expenses_data_func(db_path: str = os.path.join(os.path.pardir, 'dat
     
     # Создаем таблицы, если они не существуют
     cur = conn.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS categories (
+    # Удаляем таблицы, если они существуют, чтобы гарантировать актуальную схему
+    cur.execute('DROP TABLE IF EXISTS expenses')
+    cur.execute('DROP TABLE IF EXISTS categories')
+
+    cur.execute('''CREATE TABLE categories (
         id INTEGER PRIMARY KEY,
         name TEXT UNIQUE NOT NULL
     )''')
-    cur.execute('''CREATE TABLE IF NOT EXISTS expenses (
+    cur.execute('''CREATE TABLE expenses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
         amount REAL NOT NULL,
@@ -557,5 +632,9 @@ if __name__ == '__main__':
     # 6. Обновить общий пробег в таблице vehicles на основе expenses (sum_mileage_by_vehicle.py)
     print("\nШаг 4: Обновление общего пробега в таблице транспорта...")
     update_total_mileage_func(db_path=db_file_path)
+
+    # 7. Генерация таблицы ежемесячного бюджета
+    print("\nШаг 5: Генерация таблицы ежемесячного бюджета...")
+    generate_monthly_budget_table_func(db_path=db_file_path)
 
     print("\n--- Все операции по управлению данными завершены ---")
