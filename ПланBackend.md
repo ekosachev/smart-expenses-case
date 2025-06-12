@@ -292,6 +292,3 @@ def analyze_budget(expenses: List[Expense], budget: float) -> dict:
     }
 }
 ```
-
-### 5.3 Форматирование для RAG
-```
