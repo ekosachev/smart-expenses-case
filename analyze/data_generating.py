@@ -150,38 +150,42 @@ def _check_expenses_table_schema(db_path: str):
 def generate_monthly_budget_table_func(db_path: str = os.path.join(os.path.pardir, 'data.db')):
     conn = sqlite3.connect(db_path)
     
-    # Получаем расходы по категориям 1-8 и ID_car
+    # Получаем расходы по категориям 1-8, ID_car и category_id
     query = """
     SELECT
         strftime('%Y', date) AS year,
         strftime('%m', date) AS month,
         ID_car,
+        category_id,
         amount
     FROM expenses
     WHERE category_id BETWEEN 1 AND 8;
     """
     
     all_relevant_expenses_df = pd.read_sql_query(query, conn)
+    print("\nDebug: all_relevant_expenses_df head:\n", all_relevant_expenses_df.head())
     
     if all_relevant_expenses_df.empty:
         print("Нет данных для генерации ежемесячного бюджета.")
         conn.close()
         return
 
-    # Группируем для фактических расходов
-    actual_expenses_df = all_relevant_expenses_df.groupby(['year', 'month', 'ID_car'])['amount'].sum().reset_index()
+    # Группируем для фактических расходов по году, месяцу, машине и категории
+    actual_expenses_df = all_relevant_expenses_df.groupby(['year', 'month', 'ID_car', 'category_id'])['amount'].sum().reset_index()
     actual_expenses_df.rename(columns={'amount': 'actual_expenses_rub'}, inplace=True)
+    print("\nDebug: actual_expenses_df head:\n", actual_expenses_df.head())
 
     # Рассчитываем средний расход на каждую машину по категориям 1-8 за весь период для планируемого бюджета
-    # Это будет нашей базовой "планируемой" суммой для каждой машины в месяц
-    planned_budget_base_df = all_relevant_expenses_df.groupby('ID_car')['amount'].mean().reset_index()
+    # Это будет нашей базовой "планируемой" суммой для каждой машины и категории в месяц
+    planned_budget_base_df = all_relevant_expenses_df.groupby(['ID_car', 'category_id'])['amount'].mean().reset_index()
     planned_budget_base_df.rename(columns={'amount': 'avg_monthly_amount_per_car'}, inplace=True)
+    print("\nDebug: planned_budget_base_df head:\n", planned_budget_base_df.head())
 
     # Объединяем фактические расходы с базовыми значениями планируемого бюджета
-    monthly_budget_df = pd.merge(actual_expenses_df, planned_budget_base_df, on='ID_car', how='left')
+    monthly_budget_df = pd.merge(actual_expenses_df, planned_budget_base_df, on=['ID_car', 'category_id'], how='left')
     
     # Заполняем NaN в planned_budget_rub (для машин, по которым не было данных для расчета средней)
-    # используя общий средний расход по всем машинам
+    # используя общий средний расход по всем машинам и категориям
     overall_avg_amount = all_relevant_expenses_df['amount'].mean()
     
     monthly_budget_df['planned_budget_rub'] = monthly_budget_df['avg_monthly_amount_per_car'].fillna(overall_avg_amount)
@@ -196,13 +200,39 @@ def generate_monthly_budget_table_func(db_path: str = os.path.join(os.path.pardi
 
     # Добавляем столбец процента фактических трат от планируемых
     monthly_budget_df['percentage_of_planned'] = (monthly_budget_df['actual_expenses_rub'] / monthly_budget_df['planned_budget_rub']) * 100
+
+    # Получаем названия категорий
+    categories_df = pd.read_sql_query("SELECT id, name FROM categories", conn)
+    print("\nDebug: categories_df head:\n", categories_df.head())
+    monthly_budget_df = pd.merge(monthly_budget_df, categories_df, left_on='category_id', right_on='id', how='left')
+    monthly_budget_df.rename(columns={'name': 'category_name'}, inplace=True)
+    print("\nDebug: monthly_budget_df after category merge head:\n", monthly_budget_df.head())
     
-    # Выбираем и переименовываем столбцы для итоговой таблицы
-    final_budget_df = monthly_budget_df[['month', 'year', 'ID_car', 'planned_budget_rub', 'actual_expenses_rub', 'percentage_of_planned']]
-    final_budget_df.rename(columns={'month': 'Месяц', 'year': 'Год', 'ID_car': 'ID_машины', 'planned_budget_rub': 'Планируемый_бюджет_руб', 'actual_expenses_rub': 'Фактические_расходы_руб', 'percentage_of_planned': 'Процент_от_плана'}, inplace=True)
+    # Удаляем столбцы, которые не нужны в финальной таблице (например, временный id из слияния с categories)
+    if 'id' in monthly_budget_df.columns:
+        monthly_budget_df = monthly_budget_df.drop(columns=['id'])
+    # Удаляем временный столбец category_name, если он был создан ранее
+    if 'category_name' in monthly_budget_df.columns:
+        monthly_budget_df = monthly_budget_df.drop(columns=['category_name'])
+
+    # Определяем столбцы для итоговой таблицы и переименовываем их
+    final_budget_df = monthly_budget_df[['month', 'year', 'ID_car', 'category_id', 'planned_budget_rub', 'actual_expenses_rub', 'percentage_of_planned']].copy()
+    final_budget_df.rename(columns={'month': 'Месяц', 'year': 'Год', 'ID_car': 'ID_машины', 'category_id': 'Категория_ID', 'planned_budget_rub': 'Планируемый_бюджет_руб', 'actual_expenses_rub': 'Фактические_расходы_руб', 'percentage_of_planned': 'Процент_от_плана'}, inplace=True)
     
     # Сохраняем в новую таблицу monthly_budget
-    final_budget_df.to_sql('monthly_budget', conn, if_exists='replace', index=False)
+    cur = conn.cursor()
+    cur.execute('DROP TABLE IF EXISTS monthly_budget')
+    cur.execute('''CREATE TABLE monthly_budget (
+        Месяц TEXT NOT NULL,
+        Год TEXT NOT NULL,
+        ID_машины INTEGER NOT NULL,
+        Категория_ID INTEGER NOT NULL,
+        Планируемый_бюджет_руб REAL NOT NULL,
+        Фактические_расходы_руб REAL NOT NULL,
+        Процент_от_плана REAL NOT NULL,
+        FOREIGN KEY (Категория_ID) REFERENCES categories(id)
+    )''')
+    final_budget_df.to_sql('monthly_budget', conn, if_exists='append', index=False)
     
     conn.commit()
     conn.close()
