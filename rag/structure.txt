@@ -1,0 +1,6 @@
+dashboard/
+├── llm_handler.py       # Класс для работы с LLM
+├── data_processor.py    # Обработка данных перед подачей в LLM
+├── config.py            # Конфигурации (prompt-шаблоны, параметры LLM)
+└── main.py              # Точка входа (интеграция с бэкендом)
+
