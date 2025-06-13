@@ -26,7 +26,11 @@ class BaseService:
         return await self.repository.get(session, entity_id)
 
     async def get_entities(
-        self, session: AsyncSession, skip: int = 0, limit: int = 100, **filters: Any
+        self,
+        session: AsyncSession,
+        skip: int = 0,
+        limit: Optional[int] = 100,
+        **filters: Any,
     ) -> list[DataSchemaType]:
         """Получение списка сущностей с фильтрацией"""
         return await self.repository.get_all(session, skip=skip, limit=limit, **filters)

@@ -53,11 +53,14 @@ class BaseRepository(
         self,
         session: AsyncSession,
         skip: int = 0,
-        limit: int = 100,
+        limit: Optional[int] = 100,
         include_inactive: bool = False,
     ) -> List[DataSchemaType]:
         """Получение списка сущностей с пагинацией"""
-        query = select(self.model).offset(skip).limit(limit)
+        query = select(self.model).offset(skip)
+
+        if limit is not None:
+            query.limit(limit)
 
         if not include_inactive:
             query = query.where(self.model.is_active)
