@@ -7,6 +7,7 @@ import CircularProgressBar from './components/CircularProgressBar'
 import Autopark from './components/Autopark'
 import CarDetails from './components/CarDetails'
 import Settings from './components/Settings'
+import Calendar from './components/Calendar'
 import './App.css'
 
 function App() {
@@ -112,6 +113,8 @@ function App() {
         )
       case 'settings':
         return <Settings />
+      case 'calendar':
+        return <Calendar />
       default:
         return null
     }
@@ -147,7 +150,7 @@ function App() {
               <img src="/placeholder-item.svg" alt="Иконка Услуг" />
               <span>Services</span>
             </li>
-            <li>
+            <li className={currentPage === 'calendar' ? 'active' : ''} onClick={() => { setCurrentPage('calendar'); setSelectedCarId(null); }}>
               <img src="/placeholder-calendar.svg" alt="Календарь Иконка" />
               <span>Calendar</span>
             </li>
