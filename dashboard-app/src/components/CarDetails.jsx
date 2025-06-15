@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 const activityData = [
   { name: '01/6', km: 30 },
@@ -16,7 +17,7 @@ const activityData = [
   { name: '12/6', km: 10 },
 ];
 
-const CarDetails = ({ carId, onBack }) => {
+const CarDetails = ({ carId }) => {
   // Используйте carId для получения данных о конкретном автомобиле
   // Пока заглушка
   const carInfo = {
@@ -25,6 +26,33 @@ const CarDetails = ({ carId, onBack }) => {
     mileage: "58 760 км",
     cost: "₽3 000 000",
     rent: "₽3.2K",
+  };
+
+  const [selectedSensors, setSelectedSensors] = useState(['fuel-consumed']); // Initialize with 'fuel-consumed' as it's checked by default in the original code
+  const navigate = useNavigate();
+
+  const handleSensorChange = (event) => {
+    const { id, checked } = event.target;
+    setSelectedSensors((prevSelectedSensors) => {
+      if (checked) {
+        return [...prevSelectedSensors, id];
+      } else {
+        return prevSelectedSensors.filter((sensorId) => sensorId !== id);
+      }
+    });
+  };
+
+  const sensorsList = [
+    { id: 'fuel-consumed', name: 'Asset - Fuel Consumed (10)' },
+    { id: 'odometer', name: 'Asset - Odometer (km)' },
+    { id: 'runtime', name: 'Asset - Runtime (km)' },
+    { id: 'speed', name: 'Asset - Speed (hr)' },
+    { id: 'engine-temp', name: 'Engine Temperature (deg C)' },
+  ];
+
+  const handleSeeAllClick = () => {
+    localStorage.setItem('selectedSensorsForCharts', JSON.stringify(selectedSensors));
+    navigate('/charts');
   };
 
   return (
@@ -111,33 +139,20 @@ const CarDetails = ({ carId, onBack }) => {
             <button>Активны <img src="/placeholder-chevron-down.svg" alt="Dropdown"/></button>
           </div>
           <div className="sensor-list">
-            <div className="sensor-item">
-              <input type="checkbox" id="fuel-consumed" checked readOnly />
-              <label htmlFor="fuel-consumed">Asset - Fuel Consumed (10)</label>
-              <img src="/placeholder-line-chart.svg" alt="Chart" />
-            </div>
-            <div className="sensor-item">
-              <input type="checkbox" id="odometer" />
-              <label htmlFor="odometer">Asset - Odometer (km)</label>
-              <img src="/placeholder-line-chart.svg" alt="Chart" />
-            </div>
-            <div className="sensor-item">
-              <input type="checkbox" id="runtime" />
-              <label htmlFor="runtime">Asset - Runtime (km)</label>
-              <img src="/placeholder-line-chart.svg" alt="Chart" />
-            </div>
-            <div className="sensor-item">
-              <input type="checkbox" id="speed" />
-              <label htmlFor="speed">Asset - Speed (hr)</label>
-              <img src="/placeholder-line-chart.svg" alt="Chart" />
-            </div>
-            <div className="sensor-item">
-              <input type="checkbox" id="engine-temp" />
-              <label htmlFor="engine-temp">Engine Temperature (deg C)</label>
-              <img src="/placeholder-line-chart.svg" alt="Chart" />
-            </div>
+            {sensorsList.map((sensor) => (
+              <div className="sensor-item" key={sensor.id}>
+                <input
+                  type="checkbox"
+                  id={sensor.id}
+                  checked={selectedSensors.includes(sensor.id)}
+                  onChange={handleSensorChange}
+                />
+                <label htmlFor={sensor.id}>{sensor.name}</label>
+                <img src="/placeholder-line-chart.svg" alt="Chart" />
+              </div>
+            ))}
           </div>
-          <button className="see-all-btn">See All</button>
+          <button className="see-all-btn" onClick={handleSeeAllClick}>See All</button>
         </div>
 
         <div className="reminder-card">

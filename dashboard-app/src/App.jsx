@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import MileageChart from './components/MileageChart'
@@ -9,119 +10,104 @@ import CarDetails from './components/CarDetails'
 import Settings from './components/Settings'
 import Calendar from './components/Calendar'
 import Messages from './components/Messages'
+import ChartsPage from './components/ChartsPage'
 import './App.css'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('dashboard')
-  const [selectedCarId, setSelectedCarId] = useState(null)
+  const navigate = useNavigate();
 
   const handleSelectCar = (carId) => {
-    setSelectedCarId(carId)
-    setCurrentPage('autopark') // Убедитесь, что мы на странице автопарка, чтобы отобразить детали
-  }
+    navigate(`/autopark/${carId}`);
+  };
 
   const handleBackToAutopark = () => {
-    setSelectedCarId(null)
-  }
+    navigate('/autopark');
+  };
 
-  const renderContent = () => {
-    switch (currentPage) {
-      case 'dashboard':
-        return (
-          <>
-            {/* Основные виджеты */}
-            <section className="widgets-grid">
-              <div className="widget fuel">
-                <img src="/placeholder-fuel.svg" alt="Иконка Топлива" />
-                <h3>Топливо</h3>
-                <CircularProgressBar percentage={45} color="#4facfe" />
-              </div>
-              <div className="widget taxes">
-                <img src="/placeholder-taxes.svg" alt="Иконка Налогов" />
-                <h3>Налоги</h3>
-                <CircularProgressBar percentage={50} color="#f06292" />
-              </div>
-              <div className="widget repair">
-                <img src="/placeholder-repair.svg" alt="Иконка Ремонта" />
-                <h3>Ремонт</h3>
-                <CircularProgressBar percentage={9} color="#a770ef" />
-              </div>
-              <div className="widget other">
-                <img src="/placeholder-other.svg" alt="Иконка Прочее" />
-                <h3>Прочее</h3>
-                <CircularProgressBar percentage={25} color="#ffd700" />
-              </div>
-            </section>
+  const DashboardContent = () => (
+    <>
+      {/* Основные виджеты */}
+      <section className="widgets-grid">
+        <div className="widget fuel">
+          <img src="/placeholder-fuel.svg" alt="Иконка Топлива" />
+          <h3>Топливо</h3>
+          <CircularProgressBar percentage={45} color="#4facfe" />
+        </div>
+        <div className="widget taxes">
+          <img src="/placeholder-taxes.svg" alt="Иконка Налогов" />
+          <h3>Налоги</h3>
+          <CircularProgressBar percentage={50} color="#f06292" />
+        </div>
+        <div className="widget repair">
+          <img src="/placeholder-repair.svg" alt="Иконка Ремонта" />
+          <h3>Ремонт</h3>
+          <CircularProgressBar percentage={9} color="#a770ef" />
+        </div>
+        <div className="widget other">
+          <img src="/placeholder-other.svg" alt="Иконка Прочее" />
+          <h3>Прочее</h3>
+          <CircularProgressBar percentage={25} color="#ffd700" />
+        </div>
+      </section>
 
-            {/* Статистика пробега */}
-            <section className="mileage-stats">
-              <h3>Статистика пробега</h3>
-              <div className="time-filters">
-                <button className="active">День</button>
-                <button>Неделя</button>
-                <button>Месяц</button>
-              </div>
-              <div className="chart-placeholder">
-                <MileageChart />
-              </div>
-            </section>
+      {/* Статистика пробега */}
+      <section className="mileage-stats">
+        <h3>Статистика пробега</h3>
+        <div className="time-filters">
+          <button className="active">День</button>
+          <button>Неделя</button>
+          <button>Месяц</button>
+        </div>
+        <div className="chart-placeholder">
+          <MileageChart />
+        </div>
+      </section>
 
-            {/* Использование машин */}
-            <section className="car-usage">
-              <h3>Использование машин</h3>
-              <div className="time-filters">
-                <button className="active">День</button>
-                <button>Неделя</button>
-                <button>Месяц</button>
-              </div>
-              <p className="date">20 Мая 2025</p>
-              <div className="chart-placeholder">
-                <CarUsageChart />
-              </div>
-            </section>
+      {/* Использование машин */}
+      <section className="car-usage">
+        <h3>Использование машин</h3>
+        <div className="time-filters">
+          <button className="active">День</button>
+          <button>Неделя</button>
+          <button>Месяц</button>
+        </div>
+        <p className="date">20 Мая 2025</p>
+        <div className="chart-placeholder">
+          <CarUsageChart />
+        </div>
+      </section>
 
-            {/* Рекомендации по автомобилям */}
-            <section className="car-recommendations">
-              <div className="car-card">
-                <p>64% рекомендаций</p>
-                <div className="car-image-placeholder"></div>
-                <h4>Mini Cooper</h4>
-                <p>132k</p>
-                <p>₽2500/ч</p>
-              </div>
-              <div className="car-card">
-                <p>74% рекомендаций</p>
-                <div className="car-image-placeholder"></div>
-                <h4>Porsche 911 Carrera</h4>
-                <p>130K</p>
-                <p>₽2800/ч</p>
-              </div>
-              <div className="car-card">
-                <p>74% рекомендаций</p>
-                <div className="car-image-placeholder"></div>
-                <h4>Porsche 911 Carrera</h4>
-                <p>130K</p>
-                <p>₽2800/ч</p>
-              </div>
-            </section>
-          </>
-        )
-      case 'autopark':
-        return selectedCarId !== null ? (
-          <CarDetails carId={selectedCarId} onBack={handleBackToAutopark} />
-        ) : (
-          <Autopark onSelectCar={handleSelectCar} />
-        )
-      case 'settings':
-        return <Settings />
-      case 'calendar':
-        return <Calendar />
-      case 'messages':
-        return <Messages />
-      default:
-        return null
-    }
-  }
+      {/* Рекомендации по автомобилям */}
+      <section className="car-recommendations">
+        <div className="car-card">
+          <p>64% рекомендаций</p>
+          <div className="car-image-placeholder"></div>
+          <h4>Mini Cooper</h4>
+          <p>132k</p>
+          <p>₽2500/ч</p>
+        </div>
+        <div className="car-card">
+          <p>74% рекомендаций</p>
+          <div className="car-image-placeholder"></div>
+          <h4>Porsche 911 Carrera</h4>
+          <p>130K</p>
+          <p>₽2800/ч</p>
+        </div>
+        <div className="car-card">
+          <p>74% рекомендаций</p>
+          <div className="car-image-placeholder"></div>
+          <h4>Porsche 911 Carrera</h4>
+          <p>130K</p>
+          <p>₽2800/ч</p>
+        </div>
+      </section>
+    </>
+  );
+
+  const CarDetailsWrapper = () => {
+    const { carId } = useParams();
+    return <CarDetails carId={carId} onBack={handleBackToAutopark} />;
+  };
 
   return (
     <div className="dashboard-container">
@@ -133,11 +119,11 @@ function App() {
         </div>
         <nav className="nav-menu">
           <ul>
-            <li className={currentPage === 'dashboard' ? 'active' : ''} onClick={() => { setCurrentPage('dashboard'); setSelectedCarId(null); }}>
+            <li onClick={() => navigate('/')}>
               <img src="/placeholder-dashboard.svg" alt="Дашборд Иконка" />
               <span>Дашборд</span>
             </li>
-            <li className={currentPage === 'autopark' ? 'active' : ''} onClick={() => { setCurrentPage('autopark'); setSelectedCarId(null); }}>
+            <li onClick={() => navigate('/autopark')}>
               <img src="/placeholder-autopark.svg" alt="Автопарк Иконка" />
               <span>Автопарк</span>
             </li>
@@ -153,11 +139,11 @@ function App() {
               <img src="/placeholder-item.svg" alt="Иконка Услуг" />
               <span>Services</span>
             </li>
-            <li className={currentPage === 'calendar' ? 'active' : ''} onClick={() => { setCurrentPage('calendar'); setSelectedCarId(null); }}>
+            <li onClick={() => navigate('/calendar')}>
               <img src="/placeholder-calendar.svg" alt="Календарь Иконка" />
               <span>Calendar</span>
             </li>
-            <li className={currentPage === 'messages' ? 'active' : ''} onClick={() => { setCurrentPage('messages'); setSelectedCarId(null); }}>
+            <li onClick={() => navigate('/messages')}>
               <img src="/placeholder-messages.svg" alt="Сообщения Иконка" />
               <span>Messages</span>
             </li>
@@ -165,7 +151,7 @@ function App() {
         </nav>
         <div className="settings-logout">
           <ul>
-            <li className={currentPage === 'settings' ? 'active' : ''} onClick={() => setCurrentPage('settings')}>
+            <li onClick={() => navigate('/settings')}>
               <img src="/placeholder-settings.svg" alt="Настройки Иконка" />
               <span>Settings</span>
             </li>
@@ -190,7 +176,15 @@ function App() {
           </div>
         </header>
 
-        {renderContent()}
+        <Routes>
+          <Route path="/" element={<DashboardContent />} />
+          <Route path="/autopark" element={<Autopark onSelectCar={handleSelectCar} />} />
+          <Route path="/autopark/:carId" element={<CarDetailsWrapper />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/charts" element={<ChartsPage />} />
+        </Routes>
 
       </main>
     </div>
