@@ -1,0 +1,179 @@
+import React from 'react';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
+const activityData = [
+  { name: '01/6', km: 30 },
+  { name: '02/6', km: 40 },
+  { name: '03/6', km: 25 },
+  { name: '04/6', km: 55 },
+  { name: '05/6', km: 35 },
+  { name: '06/6', km: 50 },
+  { name: '07/6', km: 45 },
+  { name: '08/6', km: 60 },
+  { name: '09/6', km: 40 },
+  { name: '10/6', km: 30 },
+  { name: '11/6', km: 20 },
+  { name: '12/6', km: 10 },
+];
+
+const CarDetails = ({ carId, onBack }) => {
+  // Используйте carId для получения данных о конкретном автомобиле
+  // Пока заглушка
+  const carInfo = {
+    model: "Porsche 718 Cayman S",
+    fuelConsumption: "8,2 л / 100 км",
+    mileage: "58 760 км",
+    cost: "₽3 000 000",
+    rent: "₽3.2K",
+  };
+
+  return (
+    <div className="car-details-page">
+      <h2>Автопарк/{carInfo.model}</h2>
+
+      <div className="car-overview-grid">
+        <div className="car-stats-card">
+          <div className="stat-item">
+            <h4>Расход топлива</h4>
+            <span>{carInfo.fuelConsumption}</span>
+          </div>
+          <div className="stat-item">
+            <h4>Пробег</h4>
+            <span>{carInfo.mileage}</span>
+          </div>
+          <div className="stat-item">
+            <h4>Стоимость</h4>
+            <span>{carInfo.cost}</span>
+          </div>
+          <div className="stat-item">
+            <h4>Аренда</h4>
+            <span>{carInfo.rent}</span>
+          </div>
+        </div>
+
+        <div className="car-image-large">
+          <img src="/placeholder-large-car.svg" alt={carInfo.model} />
+        </div>
+
+        <div className="car-activity-card">
+          <h3>Активность</h3>
+          <p className="driven-today">Проехано в этот день</p>
+          <span className="today-km">50 км</span>
+          <ResponsiveContainer width="100%" height={150}>
+            <AreaChart data={activityData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+              <XAxis dataKey="name" axisLine={false} tickLine={false} />
+              <YAxis hide={true} />
+              <Tooltip />
+              <Area type="monotone" dataKey="km" stroke="#8884d8" fill="url(#colorActivity)" fillOpacity={0.6} isAnimationActive={true} animationEasing="ease-out" />
+              <defs>
+                <linearGradient id="colorActivity" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="car-additional-info-grid">
+        <div className="event-log-card">
+          <h3>Журнал событий</h3>
+          <div className="event-item">
+            <div className="event-icon"><img src="/placeholder-message-circle.svg" alt="Message"/></div>
+            <div className="event-content">
+              <p className="event-date">Понедельник, 7 апреля 2025</p>
+              <p className="event-description">Машина записана на плановое ТО</p>
+              <span className="event-status">Завершено</span>
+            </div>
+          </div>
+          <div className="event-item">
+            <div className="event-icon warning"><img src="/placeholder-alert-circle.svg" alt="Warning"/></div>
+            <div className="event-content">
+              <p className="event-date">Четверг, 20 марта 2025</p>
+              <p className="event-description">Требуется ремонт по отзыву LV 001</p>
+              <span className="event-link">14:07-22/05/2025</span>
+            </div>
+          </div>
+          <div className="event-item">
+            <div className="event-icon"><img src="/placeholder-tool.svg" alt="Tool"/></div>
+            <div className="event-content">
+              <p className="event-date">Вторник, 13 августа 2024</p>
+              <p className="event-description">Техническое обслуживание завершено</p>
+              <span className="event-link">15:17-13/08/2024</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="available-sensors-card">
+          <h3>Доступные датчики</h3>
+          <div className="sensor-filter">
+            <button>Активны <img src="/placeholder-chevron-down.svg" alt="Dropdown"/></button>
+          </div>
+          <div className="sensor-list">
+            <div className="sensor-item">
+              <input type="checkbox" id="fuel-consumed" checked readOnly />
+              <label htmlFor="fuel-consumed">Asset - Fuel Consumed (10)</label>
+              <img src="/placeholder-line-chart.svg" alt="Chart" />
+            </div>
+            <div className="sensor-item">
+              <input type="checkbox" id="odometer" />
+              <label htmlFor="odometer">Asset - Odometer (km)</label>
+              <img src="/placeholder-line-chart.svg" alt="Chart" />
+            </div>
+            <div className="sensor-item">
+              <input type="checkbox" id="runtime" />
+              <label htmlFor="runtime">Asset - Runtime (km)</label>
+              <img src="/placeholder-line-chart.svg" alt="Chart" />
+            </div>
+            <div className="sensor-item">
+              <input type="checkbox" id="speed" />
+              <label htmlFor="speed">Asset - Speed (hr)</label>
+              <img src="/placeholder-line-chart.svg" alt="Chart" />
+            </div>
+            <div className="sensor-item">
+              <input type="checkbox" id="engine-temp" />
+              <label htmlFor="engine-temp">Engine Temperature (deg C)</label>
+              <img src="/placeholder-line-chart.svg" alt="Chart" />
+            </div>
+          </div>
+          <button className="see-all-btn">See All</button>
+        </div>
+
+        <div className="reminder-card">
+          <h3>Reminder</h3>
+          <button className="add-new-btn">+ Add New</button>
+          <table className="reminder-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Due</th>
+                <th>Overdue</th>
+                <th>Notify</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Urgent Safety Recall</td>
+                <td>06/04/2022</td>
+                <td>08/04/2022</td>
+                <td>David Demo</td>
+                <td className="status-completed">Completed</td>
+              </tr>
+              <tr>
+                <td>Urgent Safety Recall</td>
+                <td>06/04/2022</td>
+                <td>08/04/2022</td>
+                <td>David Demo</td>
+                <td className="status-completed">Completed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CarDetails; 
