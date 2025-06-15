@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.schemas.expense_category import ExpenseCategoryData
 from src.schemas.expense_query import (
+    BudgetComparison,
     ExpenseQuery,
     ExpenseQueryResponse,
     QueryGroupPeriod,
@@ -66,6 +67,8 @@ async def expense_query(
             for id in data.category_ids
         }
 
+    expense_amounts: list[float] = [e.amount for e in expenses]
+
     return ExpenseQueryResponse(
         total_expenses=sum(map(lambda e: e.amount, expenses)),
         expenses_by_period={
@@ -96,4 +99,12 @@ async def expense_query(
         }
         if vehicles
         else None,
+        max_expense=max(expense_amounts),
+        min_expense=min(expense_amounts),
+        average_expense=sum(expense_amounts) / len(expense_amounts),
+        budget_comparison=BudgetComparison(
+            planned_budget=data.planned_budget,
+            actual_expenses=sum(expense_amounts),
+            budget_utilization=sum(expense_amounts) / data.planned_budget * 100,
+        ),
     )
