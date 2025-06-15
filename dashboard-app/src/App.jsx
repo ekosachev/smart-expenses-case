@@ -8,6 +8,7 @@ import Autopark from './components/Autopark'
 import CarDetails from './components/CarDetails'
 import Settings from './components/Settings'
 import Calendar from './components/Calendar'
+import Messages from './components/Messages'
 import './App.css'
 
 function App() {
@@ -115,6 +116,8 @@ function App() {
         return <Settings />
       case 'calendar':
         return <Calendar />
+      case 'messages':
+        return <Messages />
       default:
         return null
     }
@@ -154,7 +157,7 @@ function App() {
               <img src="/placeholder-calendar.svg" alt="Календарь Иконка" />
               <span>Calendar</span>
             </li>
-            <li>
+            <li className={currentPage === 'messages' ? 'active' : ''} onClick={() => { setCurrentPage('messages'); setSelectedCarId(null); }}>
               <img src="/placeholder-messages.svg" alt="Сообщения Иконка" />
               <span>Messages</span>
             </li>
