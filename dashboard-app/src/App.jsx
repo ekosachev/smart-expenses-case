@@ -6,6 +6,7 @@ import CarUsageChart from './components/CarUsageChart'
 import CircularProgressBar from './components/CircularProgressBar'
 import Autopark from './components/Autopark'
 import CarDetails from './components/CarDetails'
+import Settings from './components/Settings'
 import './App.css'
 
 function App() {
@@ -109,6 +110,8 @@ function App() {
         ) : (
           <Autopark onSelectCar={handleSelectCar} />
         )
+      case 'settings':
+        return <Settings />
       default:
         return null
     }
@@ -156,7 +159,7 @@ function App() {
         </nav>
         <div className="settings-logout">
           <ul>
-            <li>
+            <li className={currentPage === 'settings' ? 'active' : ''} onClick={() => setCurrentPage('settings')}>
               <img src="/placeholder-settings.svg" alt="Настройки Иконка" />
               <span>Settings</span>
             </li>
