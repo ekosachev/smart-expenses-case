@@ -10,6 +10,8 @@ from src.routers.auth_router import router as auth_router
 from src.routers.expense import router as expense_router
 from src.routers.expense_categories import router as expense_categories_router
 from src.routers.vehicle import router as vehicle_router
+from src.routers.expense_query import router as expense_query_router
+from src.routers.import_router import router as import_router
 
 logger = get_logger(__name__)
 
@@ -41,6 +43,8 @@ app.include_router(auth_router)
 app.include_router(expense_router)
 app.include_router(expense_categories_router)
 app.include_router(vehicle_router)
+app.include_router(expense_query_router)
+app.include_router(import_router)
 
 
 if __name__ == "__main__":
