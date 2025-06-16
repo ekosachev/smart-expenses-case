@@ -32,6 +32,7 @@ const CarDetails = ({ carId, car }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [showDownloadButton, setShowDownloadButton] = useState(false);
+  const [statisticsData, setStatisticsData] = useState(null); // Добавляем состояние для данных статистики
   const navigate = useNavigate();
 
   const handleSensorChange = (event) => {
@@ -60,30 +61,41 @@ const CarDetails = ({ carId, car }) => {
 
   const handleShowStatistics = () => {
     if (startDate && endDate) {
+      // Генерируем фиктивные данные статистики на основе дат
+      const dummyStatistics = {
+        carModel: carInfo.model,
+        period: `${startDate} - ${endDate}`,
+        fuelConsumption: `${Math.floor(Math.random() * 10) + 5} л / 100 км`, // Динамический расход
+        mileage: `${Math.floor(Math.random() * 100000) + 10000} км`, // Динамический пробег
+        recommendations: [
+          "Проверьте давление в шинах для оптимального расхода топлива.",
+          "Рассмотрите плановое ТО к концу выбранного периода.",
+          "Рекомендуется провести диагностику двигателя для выявления аномалий."
+        ],
+        // Добавьте другие динамические данные статистики, если нужно
+      };
+      setStatisticsData(dummyStatistics);
       setShowDownloadButton(true);
+    } else {
+      setStatisticsData(null);
+      setShowDownloadButton(false);
     }
   };
 
   const handleDownloadStatistics = () => {
-    // Здесь будет логика скачивания документа
-    const statistics = {
-      carModel: carInfo.model,
-      period: `${startDate} - ${endDate}`,
-      fuelConsumption: carInfo.fuelConsumption,
-      mileage: carInfo.mileage,
-      // Добавьте другие данные статистики
-    };
-
-    // Создаем и скачиваем файл
-    const blob = new Blob([JSON.stringify(statistics, null, 2)], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `statistics_${carInfo.model}_${startDate}_${endDate}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+    if (statisticsData) { // Используем данные из состояния
+      const blob = new Blob([JSON.stringify(statisticsData, null, 2)], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `statistics_${carInfo.model}_${startDate}_${endDate}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } else {
+      alert("Нет данных для скачивания. Пожалуйста, сначала покажите ИИ рекомендации.");
+    }
   };
 
   return (
@@ -125,6 +137,26 @@ const CarDetails = ({ carId, car }) => {
           </button>
         )}
       </div>
+
+      {statisticsData && (
+        <div className="statistics-display-card">
+          <h3>ИИ Рекомендации и Статистика за выбранный период</h3>
+          <p>Модель автомобиля: <strong>{statisticsData.carModel}</strong></p>
+          <p>Период: <strong>{statisticsData.period}</strong></p>
+          <p>Расход топлива: <strong>{statisticsData.fuelConsumption}</strong></p>
+          <p>Пробег: <strong>{statisticsData.mileage}</strong></p>
+          {statisticsData.recommendations && statisticsData.recommendations.length > 0 && (
+            <>
+              <h4>Рекомендации:</h4>
+              <ul>
+                {statisticsData.recommendations.map((rec, index) => (
+                  <li key={index}>{rec}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      )}
 
       <div className="car-overview-grid">
         <div className="car-stats-card">

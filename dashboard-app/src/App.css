@@ -309,6 +309,8 @@ body {
   font-size: 16px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative; /* Добавляем позиционирование для дочерних абсолютных элементов */
+  overflow: visible; /* Убедимся, что кнопка не обрезается */
 }
 
 .car-usage .date {
@@ -1060,4 +1062,19 @@ body {
   margin-bottom: 5px;
   font-size: 14px;
   color: #444;
+}
+
+.show-ai-recommendations-btn {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* Предотвращает перенос текста */
+}
+
+.show-ai-recommendations-btn:hover {
+  background-color: #0056b3;
 }

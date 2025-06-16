@@ -4,48 +4,48 @@ import './Messages.css';
 const Messages = () => {
   const [activeChat, setActiveChat] = useState({
     id: 1,
-    name: 'Killian James',
-    status: 'Active Now',
+    name: 'Иван Петров',
+    status: 'В сети',
     avatar: '/placeholder-user.svg',
     messages: [
-      { id: 1, sender: 'other', content: 'Hi, i hope you are doing well, yesterday you have gave a pen This very nice, i am very happy for this.yesterday you have gave a pen This very nice', time: '4:30 PM' },
-      { id: 2, sender: 'self', content: 'yea i\'m well, Thank you, i am very happy for this.yesterday you have gave a pen This very nice', time: '4:30 PM' },
-      { id: 3, sender: 'other', content: 'Hi, i hope you are doing well, yesterday you have gave a pen This very nice 🤩', time: '4:30 PM' },
-      { id: 4, sender: 'self', content: 'yea i\'m well, Thank you, i am very happy for this.yesterday you have gave a pen This very nice', time: '4:30 PM' },
-      { id: 5, sender: 'other', content: 'voice', time: '1:25' }, // Placeholder for voice message
+      { id: 1, sender: 'other', content: 'Привет, надеюсь, у тебя все хорошо, вчера ты дал мне эту ручку, она очень красивая, я очень этому рад. Вчера ты дал мне эту ручку, она очень красивая', time: '16:30' },
+      { id: 2, sender: 'self', content: 'Да, у меня все хорошо, спасибо, я очень этому рад. Вчера ты дал мне эту ручку, она очень красивая', time: '16:30' },
+      { id: 3, sender: 'other', content: 'Привет, надеюсь, у тебя все хорошо, вчера ты дал мне эту ручку, она очень красивая 🤩', time: '16:30' },
+      { id: 4, sender: 'self', content: 'Да, у меня все хорошо, спасибо, я очень этому рад. Вчера ты дал мне эту ручку, она очень красивая', time: '16:30' },
+      { id: 5, sender: 'other', content: 'голосовое', time: '1:25' }, // Placeholder for voice message
     ],
   });
 
   const pinnedContacts = [
-    { id: 1, name: 'Killian James', status: 'Typing...', avatar: '/placeholder-user.svg', time: '4:30 PM', unread: 2, online: true },
+    { id: 1, name: 'Иван Петров', status: 'Печатает...', avatar: '/placeholder-user.svg', time: '16:30', unread: 2, online: true },
   ];
 
   const allMessageContacts = [
-    { id: 2, name: 'Desian Tam', message: 'Hello! Everyone', avatar: '/placeholder-user2.svg', time: '9:36 AM', unread: 0, delivered: true },
-    { id: 3, name: 'Ahmed Medi', message: 'Wow really Cool 🔥', avatar: '/placeholder-user3.svg', time: '1:15 AM', unread: 0 },
-    { id: 4, name: 'Claudia Maudi', message: 'Nice', avatar: '/placeholder-user4.svg', time: '4:30 PM', unread: 0 },
-    { id: 5, name: 'Novita', message: 'yah, nice design', avatar: '/placeholder-user5.svg', time: '4:30 PM', unread: 2 },
-    { id: 6, name: 'Milie Nose', message: 'Awesome 🔥', avatar: '/placeholder-user6.svg', time: '8:20 PM', unread: 1 },
-    { id: 7, name: 'Ikhsan SD', message: 'Voice message', avatar: '/placeholder-user7.svg', time: 'yesterday', unread: 0, voice: true },
-    { id: 8, name: 'Aditya', message: 'publish now', avatar: '/placeholder-user8.svg', time: 'yesterday', unread: 0, delivered: true },
+    { id: 2, name: 'Денис Тамов', message: 'Привет всем!', avatar: '/placeholder-user2.svg', time: '9:36', unread: 0, delivered: true },
+    { id: 3, name: 'Ахмед Медведев', message: 'Вау, круто 🔥', avatar: '/placeholder-user3.svg', time: '1:15', unread: 0 },
+    { id: 4, name: 'Клавдия Маслова', message: 'Отлично', avatar: '/placeholder-user4.svg', time: '16:30', unread: 0 },
+    { id: 5, name: 'Новита Смирнова', message: 'да, хороший дизайн', avatar: '/placeholder-user5.svg', time: '16:30', unread: 2 },
+    { id: 6, name: 'Мила Носова', message: 'Потрясающе 🔥', avatar: '/placeholder-user6.svg', time: '20:20', unread: 1 },
+    { id: 7, name: 'Ихсан Салимов', message: 'Голосовое сообщение', avatar: '/placeholder-user7.svg', time: 'вчера', unread: 0, voice: true },
+    { id: 8, name: 'Адиль Иванов', message: 'опубликовать сейчас', avatar: '/placeholder-user8.svg', time: 'вчера', unread: 0, delivered: true },
   ];
 
   return (
     <div className="messages-container">
-      <h2>Messages
-        <img src="/placeholder-pencil.svg" alt="New message" className="new-message-icon" />
+      <h2>Сообщения
+        <img src="/placeholder-pencil.svg" alt="Новое сообщение" className="new-message-icon" />
       </h2>
 
       <div className="messages-content">
         <div className="contacts-panel">
           <div className="search-bar-contacts">
-            <img src="/placeholder-search.svg" alt="Search" />
-            <input type="text" placeholder="Search..." />
+            <img src="/placeholder-search.svg" alt="Поиск" />
+            <input type="text" placeholder="Поиск..." />
           </div>
 
           <div className="contacts-list">
             <div className="contacts-group">
-              <span className="group-title">PINNED</span>
+              <span className="group-title">ЗАКРЕПЛЕННЫЕ</span>
               {pinnedContacts.map(contact => (
                 <div key={contact.id} className="contact-item active">
                   <div className="contact-avatar-wrapper">
@@ -65,7 +65,7 @@ const Messages = () => {
             </div>
 
             <div className="contacts-group">
-              <span className="group-title">All Message</span>
+              <span className="group-title">Все сообщения</span>
               {allMessageContacts.map(contact => (
                 <div key={contact.id} className="contact-item">
                   <div className="contact-avatar-wrapper">
@@ -78,8 +78,8 @@ const Messages = () => {
                   <div className="contact-meta">
                     <div className="contact-time">{contact.time}</div>
                     {contact.unread > 0 && <div className="unread-count">{contact.unread}</div>}
-                    {contact.delivered && <img src="/placeholder-delivered.svg" alt="Delivered" className="delivered-icon" />}
-                    {contact.voice && <img src="/placeholder-microphone-small.svg" alt="Voice message" className="voice-icon" />}
+                    {contact.delivered && <img src="/placeholder-delivered.svg" alt="Доставлено" className="delivered-icon" />}
+                    {contact.voice && <img src="/placeholder-microphone-small.svg" alt="Голосовое сообщение" className="voice-icon" />}
                   </div>
                 </div>
               ))}
@@ -97,20 +97,20 @@ const Messages = () => {
               </div>
             </div>
             <div className="chat-actions">
-              <img src="/placeholder-video-call.svg" alt="Video call" />
-              <img src="/placeholder-phone-call.svg" alt="Voice call" />
-              <img src="/placeholder-more-vertical.svg" alt="More options" />
+              <img src="/placeholder-video-call.svg" alt="Видеозвонок" />
+              <img src="/placeholder-phone-call.svg" alt="Голосовой вызов" />
+              <img src="/placeholder-more-vertical.svg" alt="Дополнительные опции" />
             </div>
           </div>
 
           <div className="chat-messages">
             {activeChat.messages.map(message => (
               <div key={message.id} className={`message-bubble ${message.sender}`}>
-                {message.sender === 'other' && <img src={activeChat.avatar} alt="Avatar" className="message-avatar" />}
+                {message.sender === 'other' && <img src={activeChat.avatar} alt="Аватар" className="message-avatar" />}
                 <div className="message-content-wrapper">
                   {message.content === 'voice' ? (
                     <div className="voice-message">
-                      <img src="/placeholder-pause.svg" alt="Pause" className="voice-control-icon" />
+                      <img src="/placeholder-pause.svg" alt="Пауза" className="voice-control-icon" />
                       <div className="waveform"></div> {/* Placeholder for waveform */}
                       <span>{message.time}</span>
                     </div>
@@ -119,15 +119,15 @@ const Messages = () => {
                   )}
                   {message.sender === 'self' && <span className="message-time">{message.time}</span>}
                 </div>
-                {message.sender === 'self' && <img src={activeChat.avatar} alt="Avatar" className="message-avatar" />}
+                {message.sender === 'self' && <img src={activeChat.avatar} alt="Аватар" className="message-avatar" />}
               </div>
             ))}
           </div>
 
           <div className="chat-input-area">
-            <img src="/placeholder-attachment.svg" alt="Attachment" className="input-icon" />
-            <input type="text" placeholder="Type Something..." />
-            <img src="/placeholder-send.svg" alt="Send" className="input-icon send-icon" />
+            <img src="/placeholder-attachment.svg" alt="Вложение" className="input-icon" />
+            <input type="text" placeholder="Напишите что-нибудь..." />
+            <img src="/placeholder-send.svg" alt="Отправить" className="input-icon send-icon" />
           </div>
         </div>
       </div>

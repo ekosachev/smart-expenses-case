@@ -185,6 +185,21 @@ const CategoryStatisticsPage = () => {
         </div>
       </div>
 
+      {statisticsData && (
+        <div className="statistics-display-card">
+          <h3>Статистика за выбранный период</h3>
+          <p>Категория: <strong>{statisticsData.category}</strong></p>
+          <p>Период: <strong>{statisticsData.period}</strong></p>
+          <p>Общая сумма: <strong>{statisticsData.totalAmount}</strong></p>
+          <h4>Транзакции:</h4>
+          <ul>
+            {statisticsData.transactions.map((item, index) => (
+              <li key={index}>{item.date}: {item.amount} - {item.description}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="charts-grid">
         {selectedCharts.length > 0 ? (
           selectedCharts.map((chartId) => {
@@ -217,21 +232,6 @@ const CategoryStatisticsPage = () => {
           <p>Выберите графики для отображения.</p>
         )}
       </div>
-
-      {statisticsData && (
-        <div className="statistics-display-card">
-          <h3>Данные за выбранный период</h3>
-          <p>Категория: <strong>{statisticsData.category}</strong></p>
-          <p>Период: <strong>{statisticsData.period}</strong></p>
-          <p>Общая сумма: <strong>{statisticsData.totalAmount}</strong></p>
-          <h4>Транзакции:</h4>
-          <ul>
-            {statisticsData.transactions.map((item, index) => (
-              <li key={index}>{item.date}: {item.amount} - {item.description}</li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 };

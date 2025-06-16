@@ -1,41 +1,99 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-const data = [
-  { name: '07:00', uv: 4000, pv: 2400, amt: 2400 },
-  { name: '09:00', uv: 3000, pv: 1398, amt: 2210 },
-  { name: '11:00', uv: 2000, pv: 9800, amt: 2290 },
-  { name: '13:00', uv: 2780, pv: 3908, amt: 2000 },
-  { name: '15:00', uv: 1890, pv: 4800, amt: 2181 },
-  { name: '17:00', uv: 2390, pv: 3800, amt: 2500 },
-  { name: '19:00', uv: 3490, pv: 4300, amt: 2100 },
-  { name: '21:00', uv: 2500, pv: 2400, amt: 2400 },
-];
-
-const CarUsageChart = () => {
+const CustomDot = (props) => {
+  const { cx, cy, stroke, payload, onClick } = props;
+  if (payload.isLow) {
+    return (
+      <circle
+        cx={cx}
+        cy={cy}
+        r={8}
+        fill="red"
+        stroke="red"
+        strokeWidth={2}
+        cursor="pointer"
+        onClick={() => onClick(payload, cx, cy)}
+      />
+    );
+  }
   return (
-    <ResponsiveContainer width="100%" height={200}>
-      <AreaChart
-        data={data}
-        margin={{
-          top: 10,
-          right: 0,
-          left: 0,
-          bottom: 0,
-        }}
-      >
-        <XAxis dataKey="name" axisLine={false} tickLine={false} />
-        <YAxis hide={true} />
-        <Tooltip />
-        <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="url(#colorUv)" fillOpacity={0.6} isAnimationActive={true} animationEasing="ease-out" />
-        <defs>
-          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-      </AreaChart>
-    </ResponsiveContainer>
+    <circle cx={cx} cy={cy} r={3} fill={stroke} stroke={stroke} strokeWidth={1} />
+  );
+};
+
+const CarUsageChart = ({ data }) => {
+  const [showRecommendationButton, setShowRecommendationButton] = useState(false);
+  const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 });
+  const [selectedLowPoint, setSelectedLowPoint] = useState(null);
+
+  const handleDotClick = (payload, cx, cy) => {
+    if (payload.isLow) {
+      setShowRecommendationButton(true);
+      setButtonPosition({ x: cx + 15, y: cy });
+      setSelectedLowPoint(payload);
+    } else {
+      setShowRecommendationButton(false);
+      setSelectedLowPoint(null);
+    }
+  };
+
+  const handleShowAIRecommendations = () => {
+    if (selectedLowPoint) {
+      alert(`Получить ИИ рекомендации для ${selectedLowPoint.name} (значение: ${selectedLowPoint.uv})`);
+      setShowRecommendationButton(false);
+    }
+  };
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '200px' }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          data={data}
+          margin={{
+            top: 10,
+            right: 0,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <XAxis dataKey="name" axisLine={false} tickLine={false} />
+          <YAxis hide={true} />
+          <Tooltip />
+          <Area 
+            type="monotone" 
+            dataKey="uv" 
+            stroke="#8884d8" 
+            fill="url(#colorUv)" 
+            fillOpacity={0.6} 
+            isAnimationActive={true} 
+            animationEasing="ease-out"
+            dot={<CustomDot onClick={handleDotClick} />}
+          />
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+        </AreaChart>
+      </ResponsiveContainer>
+      {showRecommendationButton && (
+        <button
+          className="show-ai-recommendations-btn"
+          style={{
+            position: 'absolute',
+            left: buttonPosition.x,
+            top: buttonPosition.y,
+            transform: 'translateY(-50%)',
+            zIndex: 100,
+          }}
+          onClick={handleShowAIRecommendations}
+        >
+          Показать ИИ рекомендации
+        </button>
+      )}
+    </div>
   );
 };
 

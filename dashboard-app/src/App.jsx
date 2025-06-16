@@ -24,6 +24,8 @@ import './App.css'
 
 function App() {
   const navigate = useNavigate();
+  const [selectedMileagePeriod, setSelectedMileagePeriod] = useState('day');
+  const [selectedUsagePeriod, setSelectedUsagePeriod] = useState('day');
 
   const handleSelectCar = (car) => {
     navigate(`/autopark/${car.id}`, { state: { carData: car } });
@@ -37,7 +39,98 @@ function App() {
     navigate(`/statistics/${category}`);
   };
 
+  const handleMileagePeriodChange = (period) => {
+    setSelectedMileagePeriod(period);
+  };
+
+  const handleUsagePeriodChange = (period) => {
+    setSelectedUsagePeriod(period);
+  };
+
   const carImages = [car1, car2, car3, car4, car5, car6, car7, car8];
+
+  const mileageData = {
+    day: [
+      { name: '08:00', uv: 10 },
+      { name: '10:00', uv: 15 },
+      { name: '12:00', uv: 20 },
+      { name: '14:00', uv: 3, isLow: true },
+      { name: '16:00', uv: 18 },
+      { name: '18:00', uv: 12 },
+      { name: '20:00', uv: 8 },
+    ],
+    week: [
+      { name: 'ПН', uv: 100 },
+      { name: 'ВТ', uv: 120 },
+      { name: 'СР', uv: 90 },
+      { name: 'ЧТ', uv: 150 },
+      { name: 'ПТ', uv: 110 },
+      { name: 'СБ', uv: 180 },
+      { name: 'ВС', uv: 130 },
+    ],
+    month: [
+      { name: 'Нед 1', uv: 500 },
+      { name: 'Нед 2', uv: 600 },
+      { name: 'Нед 3', uv: 450 },
+      { name: 'Нед 4', uv: 700 },
+    ],
+    year: [
+      { name: 'Янв', uv: 2000 },
+      { name: 'Фев', uv: 2200 },
+      { name: 'Мар', uv: 1800 },
+      { name: 'Апр', uv: 2500 },
+      { name: 'Май', uv: 2300 },
+      { name: 'Июн', uv: 2700 },
+      { name: 'Июл', uv: 2400 },
+      { name: 'Авг', uv: 2800 },
+      { name: 'Сен', uv: 2100 },
+      { name: 'Окт', uv: 2600 },
+      { name: 'Ноя', uv: 2000 },
+      { name: 'Дек', uv: 2900 },
+    ],
+  };
+
+  const carUsageData = {
+    day: [
+      { name: '07:00', uv: 4000 },
+      { name: '09:00', uv: 3000 },
+      { name: '11:00', uv: 2000 },
+      { name: '13:00', uv: 2780 },
+      { name: '15:00', uv: 1890 },
+      { name: '17:00', uv: 2390 },
+      { name: '19:00', uv: 3490 },
+      { name: '21:00', uv: 2500 },
+    ],
+    week: [
+      { name: 'ПН', uv: 20000 },
+      { name: 'ВТ', uv: 22000 },
+      { name: 'СР', uv: 18000 },
+      { name: 'ЧТ', uv: 25000 },
+      { name: 'ПТ', uv: 21000 },
+      { name: 'СБ', uv: 28000 },
+      { name: 'ВС', uv: 23000 },
+    ],
+    month: [
+      { name: 'Нед 1', uv: 80000 },
+      { name: 'Нед 2', uv: 90000 },
+      { name: 'Нед 3', uv: 5000, isLow: true },
+      { name: 'Нед 4', uv: 95000 },
+    ],
+    year: [
+      { name: 'Янв', uv: 300000 },
+      { name: 'Фев', uv: 320000 },
+      { name: 'Мар', uv: 280000 },
+      { name: 'Апр', uv: 350000 },
+      { name: 'Май', uv: 330000 },
+      { name: 'Июн', uv: 370000 },
+      { name: 'Июл', uv: 340000 },
+      { name: 'Авг', uv: 380000 },
+      { name: 'Сен', uv: 310000 },
+      { name: 'Окт', uv: 360000 },
+      { name: 'Ноя', uv: 300000 },
+      { name: 'Дек', uv: 390000 },
+    ],
+  };
 
   const DashboardContent = () => {
     const problematicCars = [
@@ -103,12 +196,33 @@ function App() {
         <section className="mileage-stats">
           <h3>Статистика пробега</h3>
           <div className="time-filters">
-            <button className="active">День</button>
-            <button>Неделя</button>
-            <button>Месяц</button>
+            <button 
+              className={selectedMileagePeriod === 'day' ? 'active' : ''}
+              onClick={() => handleMileagePeriodChange('day')}
+            >
+              День
+            </button>
+            <button 
+              className={selectedMileagePeriod === 'week' ? 'active' : ''}
+              onClick={() => handleMileagePeriodChange('week')}
+            >
+              Неделя
+            </button>
+            <button 
+              className={selectedMileagePeriod === 'month' ? 'active' : ''}
+              onClick={() => handleMileagePeriodChange('month')}
+            >
+              Месяц
+            </button>
+            <button 
+              className={selectedMileagePeriod === 'year' ? 'active' : ''}
+              onClick={() => handleMileagePeriodChange('year')}
+            >
+              Год
+            </button>
           </div>
           <div className="chart-placeholder">
-            <MileageChart />
+            <MileageChart data={mileageData[selectedMileagePeriod]} />
           </div>
         </section>
 
@@ -116,13 +230,34 @@ function App() {
         <section className="car-usage">
           <h3>Использование машин</h3>
           <div className="time-filters">
-            <button className="active">День</button>
-            <button>Неделя</button>
-            <button>Месяц</button>
+            <button 
+              className={selectedUsagePeriod === 'day' ? 'active' : ''}
+              onClick={() => handleUsagePeriodChange('day')}
+            >
+              День
+            </button>
+            <button 
+              className={selectedUsagePeriod === 'week' ? 'active' : ''}
+              onClick={() => handleUsagePeriodChange('week')}
+            >
+              Неделя
+            </button>
+            <button 
+              className={selectedUsagePeriod === 'month' ? 'active' : ''}
+              onClick={() => handleUsagePeriodChange('month')}
+            >
+              Месяц
+            </button>
+            <button 
+              className={selectedUsagePeriod === 'year' ? 'active' : ''}
+              onClick={() => handleUsagePeriodChange('year')}
+            >
+              Год
+            </button>
           </div>
           <p className="date">20 Мая 2025</p>
           <div className="chart-placeholder">
-            <CarUsageChart />
+            <CarUsageChart data={carUsageData[selectedUsagePeriod]} />
           </div>
         </section>
 
