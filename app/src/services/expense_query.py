@@ -6,6 +6,9 @@ from src.schemas.expense_query import (
     BudgetComparison,
     ExpenseQuery,
     ExpenseQueryResponse,
+    ExpensesForCategory,
+    ExpensesForTimePeriod,
+    ExpensesForVehicle,
     QueryGroupPeriod,
 )
 from src.schemas.vehicle import VehicleData
@@ -30,10 +33,10 @@ async def expense_query(
     )
 
     if data.category_ids is not None:
-        expenses = list(filter(lambda e: e.category_id in data.category_ids, expenses))
+        expenses = [e for e in expenses if e.category_id in data.category_ids]
 
     if data.vehicle_ids is not None:
-        expenses = list(filter(lambda e: e.vehicle_id in data.vehicle_ids, expenses))
+        expenses = [e for e in expenses if e.vehicle_id in data.vehicle_ids]
 
     period_length: timedelta
     if data.group_by == QueryGroupPeriod.day:
@@ -67,37 +70,76 @@ async def expense_query(
             for id in data.category_ids
         }
 
+    expenses_grouped_by_periods = {
+        (start_date, end_date): [
+            e
+            for e in expenses
+            if (e.expense_date >= start_date) and (e.expense_date < end_date)
+        ]
+        for (start_date, end_date) in periods
+    }
+
+    expenses_grouped_by_category = {
+        category.name: [e for e in expenses if e.category_id == category.id]
+        for category in categories.values()
+        if category is not None
+    }
+
+    expenses_grouped_by_vehicle = {
+        (vehicle.license_plate, vehicle.make, vehicle.model, vehicle.vehicle_type): [
+            e for e in expenses if e.vehicle_id == vehicle.id
+        ]
+        for vehicle in vehicles.values()
+        if vehicle is not None
+    }
+
     expense_amounts: list[float] = [e.amount for e in expenses]
 
     return ExpenseQueryResponse(
         total_expenses=sum(map(lambda e: e.amount, expenses)),
-        expenses_by_period={
-            (start_date, end_date): sum(
-                [
-                    e.amount
-                    for e in expenses
-                    if (e.expense_date >= start_date) and (e.expense_date < end_date)
-                ]
+        expenses_by_period=[
+            ExpensesForTimePeriod(
+                min_expense=min(e.amount for e in expenses),
+                max_expense=max(e.amount for e in expenses),
+                average_expense=sum(e.amount for e in expenses) / len(expenses),
+                total_expenses=sum(e.amount for e in expenses),
+                time_period_start=start_date,
+                time_period_end=end_date,
             )
-            for (start_date, end_date) in periods
-        },
-        expenses_by_category={
-            category_obj.name: sum(
-                [e.amount for e in expenses if e.category_id == category_id]
+            for (
+                (start_date, end_date),
+                expenses,
+            ) in expenses_grouped_by_periods.items()
+        ],
+        expenses_by_category=[
+            ExpensesForCategory(
+                min_expense=min(e.amount for e in expenses),
+                max_expense=max(e.amount for e in expenses),
+                average_expense=sum(e.amount for e in expenses) / len(expenses),
+                total_expenses=sum(e.amount for e in expenses),
+                category_name=category_name,
             )
-            for (category_id, category_obj) in categories.items()
-            if category_obj is not None
-        }
-        if categories
+            for (category_name, expenses) in expenses_grouped_by_category.items()
+        ]
+        if data.category_ids
         else None,
-        expenses_by_vehicle={
-            vehicle_obj.license_plate: sum(
-                [e.amount for e in expenses if e.vehicle_id == vehicle_id]
+        expenses_by_vehicle=[
+            ExpensesForVehicle(
+                min_expense=min(e.amount for e in expenses),
+                max_expense=max(e.amount for e in expenses),
+                average_expense=sum(e.amount for e in expenses) / len(expenses),
+                total_expenses=sum(e.amount for e in expenses),
+                license_plate=license_plate,
+                model=model,
+                make=make,
+                vehicle_type=vehicle_type,
             )
-            for (vehicle_id, vehicle_obj) in vehicles.items()
-            if vehicle_obj is not None
-        }
-        if vehicles
+            for (
+                (license_plate, make, model, vehicle_type),
+                expenses,
+            ) in expenses_grouped_by_vehicle.items()
+        ]
+        if data.vehicle_ids
         else None,
         max_expense=max(expense_amounts),
         min_expense=min(expense_amounts),
