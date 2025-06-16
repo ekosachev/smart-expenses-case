@@ -17,11 +17,11 @@ const activityData = [
   { name: '12/6', km: 10 },
 ];
 
-const CarDetails = ({ carId }) => {
+const CarDetails = ({ carId, car }) => {
   // Используйте carId для получения данных о конкретном автомобиле
   // Пока заглушка
   const carInfo = {
-    model: "Porsche 718 Cayman S",
+    model: car ? car.model : "Porsche 718 Cayman S",
     fuelConsumption: "8,2 л / 100 км",
     mileage: "58 760 км",
     cost: "₽3 000 000",
@@ -29,6 +29,9 @@ const CarDetails = ({ carId }) => {
   };
 
   const [selectedSensors, setSelectedSensors] = useState(['fuel-consumed']); // Initialize with 'fuel-consumed' as it's checked by default in the original code
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [showDownloadButton, setShowDownloadButton] = useState(false);
   const navigate = useNavigate();
 
   const handleSensorChange = (event) => {
@@ -55,9 +58,73 @@ const CarDetails = ({ carId }) => {
     navigate('/charts');
   };
 
+  const handleShowStatistics = () => {
+    if (startDate && endDate) {
+      setShowDownloadButton(true);
+    }
+  };
+
+  const handleDownloadStatistics = () => {
+    // Здесь будет логика скачивания документа
+    const statistics = {
+      carModel: carInfo.model,
+      period: `${startDate} - ${endDate}`,
+      fuelConsumption: carInfo.fuelConsumption,
+      mileage: carInfo.mileage,
+      // Добавьте другие данные статистики
+    };
+
+    // Создаем и скачиваем файл
+    const blob = new Blob([JSON.stringify(statistics, null, 2)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `statistics_${carInfo.model}_${startDate}_${endDate}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="car-details-page">
       <h2>Автопарк/{carInfo.model}</h2>
+
+      <div className="date-range-container">
+        <div className="date-inputs">
+          <div className="date-input">
+            <label>С:</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+          <div className="date-input">
+            <label>По:</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+        </div>
+        <button 
+          className="show-statistics-btn"
+          onClick={handleShowStatistics}
+          disabled={!startDate || !endDate}
+        >
+          Показать статистику
+        </button>
+        {showDownloadButton && (
+          <button 
+            className="download-statistics-btn"
+            onClick={handleDownloadStatistics}
+          >
+            Скачать статистику
+          </button>
+        )}
+      </div>
 
       <div className="car-overview-grid">
         <div className="car-stats-card">
@@ -80,7 +147,7 @@ const CarDetails = ({ carId }) => {
         </div>
 
         <div className="car-image-large">
-          <img src="/placeholder-large-car.svg" alt={carInfo.model} />
+          <img src={car ? car.image : "/placeholder-large-car.svg"} alt={carInfo.model} />
         </div>
 
         <div className="car-activity-card">
