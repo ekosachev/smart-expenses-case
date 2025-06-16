@@ -11,6 +11,7 @@ import Settings from './components/Settings'
 import Calendar from './components/Calendar'
 import Messages from './components/Messages'
 import ChartsPage from './components/ChartsPage'
+import CategoryStatisticsPage from './components/CategoryStatisticsPage'
 import car1 from './img_cars/2014-mercedes-benz-m-class-2012-mercedes-benz-m-class-2008-mercedes-benz-m-class-sport-utility-vehicle-mercedes-car-png-image-8230b0372dd015bcf5312eb17e2751ee-1.png';
 import car2 from './img_cars/car-audi-a3-audi-a4-car-3822c2bc08e2c2bce1d8ead0e70c7ddb-1.png';
 import car3 from './img_cars/maruti-suzuki-dzire-car-suzuki-ertiga-swift-dzire-f8a7d4ae19bd1c349dc080d9081ffd31.png';
@@ -32,93 +33,118 @@ function App() {
     navigate('/autopark');
   };
 
+  const handleWidgetClick = (category) => {
+    navigate(`/statistics/${category}`);
+  };
+
   const carImages = [car1, car2, car3, car4, car5, car6, car7, car8];
 
-  const DashboardContent = () => (
-    <>
-      {/* Основные виджеты */}
-      <section className="widgets-grid">
-        <div className="widget fuel">
-          <img src="/placeholder-fuel.svg" alt="Иконка Топлива" />
-          <h3>Топливо</h3>
-          <CircularProgressBar percentage={45} color="#4facfe" />
-        </div>
-        <div className="widget taxes">
-          <img src="/placeholder-taxes.svg" alt="Иконка Налогов" />
-          <h3>Налоги</h3>
-          <CircularProgressBar percentage={50} color="#f06292" />
-        </div>
-        <div className="widget repair">
-          <img src="/placeholder-repair.svg" alt="Иконка Ремонта" />
-          <h3>Ремонт</h3>
-          <CircularProgressBar percentage={9} color="#a770ef" />
-        </div>
-        <div className="widget other">
-          <img src="/placeholder-other.svg" alt="Иконка Прочее" />
-          <h3>Прочее</h3>
-          <CircularProgressBar percentage={25} color="#ffd700" />
-        </div>
-      </section>
+  const DashboardContent = () => {
+    const problematicCars = [
+      {
+        id: 10,
+        model: "Fiat Punto",
+        recommendation: 25,
+        status: "needs-repair", // 'needs-repair' or 'idle'
+        image: carImages[3 % carImages.length], // Using car4 for Fiat Punto
+        mileage: "180k",
+        price: "₽1500/ч",
+        type: "Хэтчбек"
+      },
+      {
+        id: 11,
+        model: "Volkswagen Golf",
+        recommendation: 35,
+        status: "idle", // 'needs-repair' or 'idle'
+        image: carImages[4 % carImages.length], // Using car5 for VW Golf
+        mileage: "150k",
+        price: "₽1200/ч",
+        type: "Хэтчбек"
+      },
+      {
+        id: 12,
+        model: "Opel Astra",
+        recommendation: 15,
+        status: "needs-repair", // 'needs-repair' or 'idle'
+        image: carImages[5 % carImages.length], // Using car6 for Opel Astra
+        mileage: "200k",
+        price: "₽1000/ч",
+        type: "Седан"
+      },
+    ];
 
-      {/* Статистика пробега */}
-      <section className="mileage-stats">
-        <h3>Статистика пробега</h3>
-        <div className="time-filters">
-          <button className="active">День</button>
-          <button>Неделя</button>
-          <button>Месяц</button>
-        </div>
-        <div className="chart-placeholder">
-          <MileageChart />
-        </div>
-      </section>
+    return (
+      <>
+        {/* Основные виджеты */}
+        <section className="widgets-grid">
+          <div className="widget fuel" onClick={() => handleWidgetClick('fuel')}> 
+            <img src="/placeholder-fuel.svg" alt="Иконка Топлива" />
+            <h3>Топливо</h3>
+            <CircularProgressBar percentage={45} color="#4facfe" />
+          </div>
+          <div className="widget taxes" onClick={() => handleWidgetClick('taxes')}> 
+            <img src="/placeholder-taxes.svg" alt="Иконка Налогов" />
+            <h3>Налоги</h3>
+            <CircularProgressBar percentage={50} color="#f06292" />
+          </div>
+          <div className="widget repair" onClick={() => handleWidgetClick('repair')}> 
+            <img src="/placeholder-repair.svg" alt="Иконка Ремонта" />
+            <h3>Ремонт</h3>
+            <CircularProgressBar percentage={9} color="#a770ef" />
+          </div>
+          <div className="widget other" onClick={() => handleWidgetClick('other')}> 
+            <img src="/placeholder-other.svg" alt="Иконка Прочее" />
+            <h3>Прочее</h3>
+            <CircularProgressBar percentage={25} color="#ffd700" />
+          </div>
+        </section>
 
-      {/* Использование машин */}
-      <section className="car-usage">
-        <h3>Использование машин</h3>
-        <div className="time-filters">
-          <button className="active">День</button>
-          <button>Неделя</button>
-          <button>Месяц</button>
-        </div>
-        <p className="date">20 Мая 2025</p>
-        <div className="chart-placeholder">
-          <CarUsageChart />
-        </div>
-      </section>
+        {/* Статистика пробега */}
+        <section className="mileage-stats">
+          <h3>Статистика пробега</h3>
+          <div className="time-filters">
+            <button className="active">День</button>
+            <button>Неделя</button>
+            <button>Месяц</button>
+          </div>
+          <div className="chart-placeholder">
+            <MileageChart />
+          </div>
+        </section>
 
-      {/* Рекомендации по автомобилям */}
-      <section className="car-recommendations">
-        <div className="car-card">
-          <p>64% рекомендаций</p>
-          <div className="car-image-placeholder">
-            <img src={carImages[0]} alt="Mini Cooper" className="car-image-recommendation" />
+        {/* Использование машин */}
+        <section className="car-usage">
+          <h3>Использование машин</h3>
+          <div className="time-filters">
+            <button className="active">День</button>
+            <button>Неделя</button>
+            <button>Месяц</button>
           </div>
-          <h4>Mini Cooper</h4>
-          <p>132k</p>
-          <p>₽2500/ч</p>
-        </div>
-        <div className="car-card">
-          <p>74% рекомендаций</p>
-          <div className="car-image-placeholder">
-            <img src={carImages[1 % carImages.length]} alt="Porsche 911 Carrera" className="car-image-recommendation" />
+          <p className="date">20 Мая 2025</p>
+          <div className="chart-placeholder">
+            <CarUsageChart />
           </div>
-          <h4>Porsche 911 Carrera</h4>
-          <p>130K</p>
-          <p>₽2800/ч</p>
-        </div>
-        <div className="car-card">
-          <p>74% рекомендаций</p>
-          <div className="car-image-placeholder">
-            <img src={carImages[2 % carImages.length]} alt="Porsche 911 Carrera" className="car-image-recommendation" />
-          </div>
-          <h4>Porsche 911 Carrera</h4>
-          <p>130K</p>
-          <p>₽2800/ч</p>
-        </div>
-      </section>
-    </>
-  );
+        </section>
+
+        {/* Рекомендации по автомобилям */}
+        <section className="car-recommendations">
+          {problematicCars.map(car => (
+            <div className="car-card" key={car.id} onClick={() => handleSelectCar(car)}>
+              <p className={car.recommendation <= 25 ? "recommendation-low-red" : (car.recommendation <= 50 ? "recommendation-low-yellow" : "")}>
+                {car.recommendation}% рекомендаций
+              </p>
+              <div className="car-image-placeholder">
+                <img src={car.image} alt={car.model} className="car-image-recommendation" />
+              </div>
+              <h4>{car.model}</h4>
+              <p>{car.mileage}</p>
+              <p>{car.price}</p>
+            </div>
+          ))}
+        </section>
+      </>
+    );
+  };
 
   const CarDetailsWrapper = () => {
     const { carId } = useParams();
@@ -190,6 +216,7 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/charts" element={<ChartsPage />} />
+          <Route path="/statistics/:category" element={<CategoryStatisticsPage />} />
         </Routes>
 
       </main>

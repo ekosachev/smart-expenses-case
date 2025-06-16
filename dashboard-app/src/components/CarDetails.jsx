@@ -114,7 +114,7 @@ const CarDetails = ({ carId, car }) => {
           onClick={handleShowStatistics}
           disabled={!startDate || !endDate}
         >
-          Показать статистику
+          Показать ИИ рекомендации
         </button>
         {showDownloadButton && (
           <button 
