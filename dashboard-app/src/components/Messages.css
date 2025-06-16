@@ -113,7 +113,7 @@
   right: 0px;
   width: 10px;
   height: 10px;
-  background-color: #4CAF50; /* Green color for online */
+  background-color: #6BFCBA; /* Светло-зеленый цвет для онлайн */
   border-radius: 50%;
   border: 2px solid #fff;
 }
@@ -151,7 +151,7 @@
 }
 
 .unread-count {
-  background-color: #ff6347; /* Red dot */
+  background-color: #F79023; /* Оранжевый акцент для непрочитанных */
   color: white;
   font-size: 0.7rem;
   font-weight: 600;
@@ -206,7 +206,7 @@
 
 .chat-contact-status {
   font-size: 0.85rem;
-  color: #4CAF50; /* Active Now color */
+  color: #1D92C5; /* Плотный голубой для статуса Active Now */
 }
 
 .chat-actions img {
@@ -268,7 +268,7 @@
 }
 
 .message-bubble.self .message-content-wrapper {
-  background-color: #6a5acd; /* Purple color */
+  background-color: #1D92C5; /* Плотный голубой */
   color: white;
   border-bottom-right-radius: 5px; /* Pointy corner */
 }
@@ -334,6 +334,7 @@
 .chat-input-area .input-icon.send-icon {
   opacity: 1;
   filter: invert(30%) sepia(80%) saturate(2000%) hue-rotate(240deg) brightness(100%) contrast(100%); /* Purple color for send icon */
+  filter: invert(57%) sepia(74%) saturate(2150%) hue-rotate(330deg) brightness(97%) contrast(100%); /* Оранжевый акцент для иконки отправки */
 }
 
 @media (max-width: 1024px) {

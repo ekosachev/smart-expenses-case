@@ -9,8 +9,8 @@ const CustomDot = (props) => {
         cx={cx}
         cy={cy}
         r={8}
-        fill="red"
-        stroke="red"
+        fill="#F79023"
+        stroke="#F79023"
         strokeWidth={2}
         cursor="pointer"
         onClick={() => onClick(payload, cx, cy)}
@@ -63,7 +63,7 @@ const CarUsageChart = ({ data }) => {
           <Area 
             type="monotone" 
             dataKey="uv" 
-            stroke="#8884d8" 
+            stroke="#0165C0" 
             fill="url(#colorUv)" 
             fillOpacity={0.6} 
             isAnimationActive={true} 
@@ -72,8 +72,8 @@ const CarUsageChart = ({ data }) => {
           />
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+              <stop offset="5%" stopColor="#0165C0" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#B6D9FC" stopOpacity={0} />
             </linearGradient>
           </defs>
         </AreaChart>

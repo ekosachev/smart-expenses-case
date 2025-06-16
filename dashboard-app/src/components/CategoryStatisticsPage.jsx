@@ -8,7 +8,7 @@ const categoryChartsData = {
     "daily-consumption": {
       name: "Ежедневный расход",
       unit: "(л)",
-      color: "#8884d8",
+      color: "#6BFCBA",
       data: [
         { name: '01/01', value: 10 }, { name: '02/01', value: 12 }, { name: '03/01', value: 11 },
         { name: '04/01', value: 15 }, { name: '05/01', value: 13 }, { name: '06/01', value: 14 },
@@ -17,7 +17,7 @@ const categoryChartsData = {
     "refuel-cost": {
       name: "Стоимость заправки",
       unit: "(₽)",
-      color: "#82ca9d",
+      color: "#B6D9FC",
       data: [
         { name: '01/01', value: 500 }, { name: '02/01', value: 600 }, { name: '03/01', value: 550 },
         { name: '04/01', value: 750 }, { name: '05/01', value: 650 }, { name: '06/01', value: 700 },
@@ -28,7 +28,7 @@ const categoryChartsData = {
     "monthly-taxes": {
       name: "Ежемесячные налоги",
       unit: "(₽)",
-      color: "#ffc658",
+      color: "#82C4F8",
       data: [
         { name: 'Янв', value: 2000 }, { name: 'Фев', value: 2100 }, { name: 'Мар', value: 2050 },
         { name: 'Апр', value: 2200 }, { name: 'Май', value: 2150 },
@@ -39,7 +39,7 @@ const categoryChartsData = {
     "repair-cost": {
       name: "Стоимость ремонта",
       unit: "(₽)",
-      color: "#ff7300",
+      color: "#1D92C5",
       data: [
         { name: 'Март', value: 15000 }, { name: 'Апрель', value: 5000 }, { name: 'Май', value: 20000 },
       ],
@@ -49,7 +49,7 @@ const categoryChartsData = {
     "misc-expenses": {
       name: "Прочие расходы",
       unit: "(₽)",
-      color: "#387902",
+      color: "#F79023",
       data: [
         { name: 'Янв', value: 1000 }, { name: 'Фев', value: 800 }, { name: 'Мар', value: 1200 },
       ],

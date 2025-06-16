@@ -191,11 +191,11 @@ const CarDetails = ({ carId, car }) => {
               <XAxis dataKey="name" axisLine={false} tickLine={false} />
               <YAxis hide={true} />
               <Tooltip />
-              <Area type="monotone" dataKey="km" stroke="#8884d8" fill="url(#colorActivity)" fillOpacity={0.6} isAnimationActive={true} animationEasing="ease-out" />
+              <Area type="monotone" dataKey="km" stroke="#0165C0" fill="url(#colorActivity)" fillOpacity={0.6} isAnimationActive={true} animationEasing="ease-out" />
               <defs>
                 <linearGradient id="colorActivity" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#0165C0" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#B6D9FC" stopOpacity={0} />
                 </linearGradient>
               </defs>
             </AreaChart>

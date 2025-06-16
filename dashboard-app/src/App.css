@@ -4,7 +4,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f0f2f5; /* Светло-серый фон */
+  background-color: #F0F2F5; /* Светло-серый фон, ближе к белому */
   color: #333;
 }
 
@@ -18,7 +18,7 @@ body {
 .dashboard-container {
   display: flex;
   height: 100vh;
-  background-color: #f8f9fa; /* Общий фон контейнера */
+  background-color: #B6D9FC; /* Светло-голубой фон контейнера */
 }
 
 /* Боковая панель */
@@ -74,14 +74,14 @@ body {
 
 .sidebar .nav-menu li:hover,
 .sidebar .settings-logout li:hover {
-  background-color: #e6f7ff;
-  color: #007bff;
+  background-color: #E6F7FF; /* Светло-голубой при наведении */
+  color: #1D92C5; /* Плотный голубой текст при наведении */
   transform: translateX(5px);
 }
 
 .sidebar .nav-menu li.active {
-  background-color: #f0f2f5;
-  color: #007bff;
+  background-color: #82C4F8; /* Голубой для активного элемента */
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -94,7 +94,7 @@ body {
 }
 
 .sidebar .nav-menu li.active img {
-  filter: none; /* Активные иконки без фильтра */
+  filter: brightness(0) invert(1); /* Белый для активных иконок */
 }
 
 .sidebar .settings-logout {
@@ -156,8 +156,8 @@ body {
 }
 
 .top-bar .search-bar input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  border-color: #1D92C5; /* Плотный голубой при фокусе */
+  box-shadow: 0 0 0 3px rgba(29, 146, 197, 0.25);
   background-color: #fff;
 }
 
@@ -243,19 +243,19 @@ body {
 }
 
 .widget.fuel .percentage-circle {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #6BFCBA 0%, #B6D9FC 100%); /* Градиент знака */
 }
 
 .widget.taxes .percentage-circle {
-  background: linear-gradient(135deg, #f06292 0%, #ff527b 100%);
+  background: linear-gradient(135deg, #82C4F8 0%, #1D92C5 100%); /* Оттенки голубого */
 }
 
 .widget.repair .percentage-circle {
-  background: linear-gradient(135deg, #a770ef 0%, #cf8bf3 50%, #fbc2eb 100%);
+  background: linear-gradient(135deg, #B6D9FC 0%, #6BFCBA 100%); /* Легкий градиент */
 }
 
 .widget.other .percentage-circle {
-  background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+  background-color: #F79023; /* Оранжевый акцент */
 }
 
 /* Секции статистики и использования */
@@ -299,18 +299,14 @@ body {
 }
 
 .chart-placeholder {
-  height: 200px;
-  background-color: #f0f2f5; /* Серый фон для плейсхолдера */
-  border-radius: 8px;
+  background-color: #ffffff; /* Белый фон */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #777;
-  font-size: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative; /* Добавляем позиционирование для дочерних абсолютных элементов */
-  overflow: visible; /* Убедимся, что кнопка не обрезается */
+  font-size: 1.2rem;
+  color: #888;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .car-usage .date {
@@ -359,7 +355,7 @@ body {
 .car-image-placeholder {
   width: 100%;
   height: 120px;
-  background-color: #e0e0e0; /* Серый фон для плейсхолдера изображения */
+  background-color: #ffffff; /* Белый фон для плейсхолдера изображения */
   border-radius: 8px;
   margin-bottom: 15px;
   display: flex;
@@ -568,13 +564,13 @@ body {
 
 .car-details-page .car-overview-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1fr 2fr; /* Изменено, чтобы car-stats-card был в 2 раза уже картинки */
   gap: 20px;
   margin-bottom: 25px;
 }
 
 .car-details-page .car-stats-card {
-  background-color: #007bff; /* Синий фон */
+  background: linear-gradient(to right, #0165C0, #00C1DC); /* Градиент как у кнопки */
   color: #fff;
   padding: 25px;
   border-radius: 12px;
@@ -595,6 +591,7 @@ body {
   opacity: 0.8;
   text-decoration: underline;
   text-underline-offset: 4px;
+  color: #ffffff; /* Белый цвет для h4 */
 }
 
 .car-details-page .car-stats-card .stat-item span {
@@ -603,7 +600,7 @@ body {
 }
 
 .car-details-page .car-image-large {
-  background-color: #f0f2f5;
+  background-color: #ffffff; /* Белый фон */
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -682,7 +679,7 @@ body {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background-color: #e6f7ff;
+  background-color: rgba(107, 252, 186, 0.2); /* Полупрозрачный светло-зеленый */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -722,8 +719,8 @@ body {
 }
 
 .car-details-page .event-item .event-content .event-status {
-  background-color: #e6ffe6;
-  color: #38a169;
+  background-color: rgba(107, 252, 186, 0.2); /* Полупрозрачный светло-зеленый */
+  color: #6BFCBA; /* Светло-зеленый */
   padding: 4px 8px;
   border-radius: 5px;
   font-size: 12px;
@@ -927,36 +924,37 @@ body {
 
 .show-statistics-btn,
 .download-statistics-btn {
-  padding: 10px 20px;
+  padding: 12px 25px;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  color: white;
 }
 
 .show-statistics-btn {
-  background-color: #007bff;
-  color: #ffffff;
+  background: linear-gradient(to right, #0165C0, #00C1DC); /* Градиент знака */
 }
 
 .show-statistics-btn:hover {
-  background-color: #0056b3;
+  opacity: 0.9; /* Немного затемняем при наведении */
 }
 
 .show-statistics-btn:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .download-statistics-btn {
-  background-color: #28a745;
-  color: #ffffff;
+  background: linear-gradient(to right, #0165C0, #00C1DC); /* Градиент знака */
+  margin-left: 15px;
 }
 
 .download-statistics-btn:hover {
-  background-color: #218838;
+  opacity: 0.9; /* Немного затемняем при наведении */
 }
 
 /* Стили для страницы статистики по категориям */

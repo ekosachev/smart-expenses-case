@@ -13,7 +13,7 @@ const Calendar = () => {
     { time: '09:45 am', title: 'Drift Swries Second Round', attendees: null, details: 'JDM', duration: '1h 45 min', value: null, color: '#6A5ACD' }, // Darker Purple
     { time: '10:00 am', title: 'Moto Track Day', attendees: null, details: 'All Motorbikes', duration: null, value: '154K', color: '#4682B4' }, // Blue
     { time: '10:45 am', title: 'Moto Track Day', attendees: null, details: 'All Motorbikes', duration: null, value: '58K', color: '#F5F5F5' }, // Light Grey (for dashed)
-    { time: '01:00 pm', title: 'Moto Track Day', attendees: null, details: 'All Motorbikes', duration: null, value: '145K', color: '#3CB371' }, // Green
+    { time: '01:00 pm', title: 'Moto Track Day', attendees: null, details: 'All Motorbikes', duration: null, value: '145K', color: '#6BFCBA' }, // Светло-зеленый
     { time: '02:00 pm', title: 'Private Event', attendees: null, details: 'All Motorbikes', duration: null, value: '134K', color: '#FF6347' }, // Red-orange
     { time: '03:00 pm', title: null, attendees: null, details: null, duration: null, value: null, color: null }, // Empty slot
     { time: '03:45 pm', title: 'Drift Series Second Round', attendees: null, details: 'JDM', duration: null, value: '58K', color: '#F5F5F5' }, // Light Grey (for dashed)
@@ -21,7 +21,7 @@ const Calendar = () => {
 
   const upcomingEvents = [
     { time: '09:00', title: 'Drift Series Firs Round', type: 'JDM', users: ['/placeholder-user.svg', '/placeholder-user2.svg'], extraUsers: 8, color: '#8A2BE2' }, // Purple
-    { time: '12:00', title: 'Drift Series Firs Round', type: 'JDM', users: ['/placeholder-user.svg', '/placeholder-user2.svg'], extraUsers: 5, color: '#3CB371' }, // Green
+    { time: '12:00', title: 'Drift Series Firs Round', type: 'JDM', users: ['/placeholder-user.svg', '/placeholder-user2.svg'], extraUsers: 5, color: '#6BFCBA' }, // Светло-зеленый
   ];
 
   const getDaysInMonth = (date) => {
