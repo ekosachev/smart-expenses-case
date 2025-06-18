@@ -33,7 +33,7 @@ async def common_import_params(
         return {
             "data": data,
             "company_id": company_id,
-            "user_id": current_user["id"],
+            "user_id": current_user.id,
             "session": session,
         }
     except ValueError as e:
@@ -70,4 +70,3 @@ async def download_expenses_template(
     """Скачать шаблон для импорта расходов"""
     columns = list(ExpenseCSVRow.model_json_schema()["properties"].keys())
     return import_service.generate_template(format, columns)
-
