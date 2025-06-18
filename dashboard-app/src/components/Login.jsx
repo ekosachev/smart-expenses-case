@@ -76,8 +76,8 @@ const Login = () => {
         <div className="login-card">
           <div className="login-header">
             <div className="logo-section">
-              <img src="/vite.svg" alt="Logo" className="logo-icon" />
-              <h1>Smart Expenses</h1>
+              <img src="/src/assets/ppr logo.svg" alt="ППР Logo" className="logo-icon" />
+              <h1>ППР</h1>
             </div>
             <p className="login-subtitle">Добро пожаловать обратно!</p>
           </div>

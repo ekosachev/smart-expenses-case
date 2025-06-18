@@ -301,8 +301,8 @@ function App() {
           <aside className="sidebar">
             {/* Боковая панель */}
             <div className="logo">
-              <img src="/placeholder-logo.svg" alt="Motiv. Logo" />
-              <span>Motiv.</span>
+              <img src="/src/assets/ppr logo.svg" alt="ППР Logo" />
+              <span>ППР</span>
             </div>
             <nav className="nav-menu">
               <ul>
