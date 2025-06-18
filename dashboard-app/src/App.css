@@ -21,6 +21,55 @@ body {
   background-color: #B6D9FC; /* Светло-голубой фон контейнера */
 }
 
+/* Макет дашборда с левой и правой панелями */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 20px;
+  height: 100%;
+}
+
+.left-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Адаптивность для макета */
+@media (max-width: 1200px) {
+  .dashboard-layout {
+    grid-template-columns: 300px 1fr;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .left-panel {
+    position: static;
+    order: 2;
+  }
+  
+  .right-panel {
+    order: 1;
+  }
+}
+
 /* Боковая панель */
 .sidebar {
   width: 250px;

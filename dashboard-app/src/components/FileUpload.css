@@ -1,0 +1,422 @@
+/* Контейнер загрузки файлов */
+.file-upload-container {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.file-upload-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.file-upload-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.file-upload-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Селектор типа данных */
+.upload-type-selector {
+  margin-bottom: 20px;
+}
+
+.upload-type-selector label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.type-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.type-buttons button {
+  flex: 1;
+  padding: 10px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f8f9fa;
+  color: #555;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.type-buttons button:hover {
+  border-color: #1D92C5;
+  background: #E6F7FF;
+  color: #1D92C5;
+}
+
+.type-buttons button.active {
+  border-color: #1D92C5;
+  background: #1D92C5;
+  color: white;
+}
+
+/* Селектор компании */
+.company-selector {
+  margin-bottom: 20px;
+}
+
+.company-selector label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.company-selector input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.company-selector input:focus {
+  outline: none;
+  border-color: #1D92C5;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(29, 146, 197, 0.1);
+}
+
+/* Кнопка скачивания шаблона */
+.template-download {
+  margin-bottom: 20px;
+}
+
+.template-btn {
+  width: 100%;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.template-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* Зона перетаскивания файлов */
+.file-drop-zone {
+  border: 2px dashed #d0d0d0;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  margin-bottom: 20px;
+}
+
+.file-drop-zone:hover {
+  border-color: #1D92C5;
+  background: #f0f8ff;
+}
+
+.file-drop-zone.drag-active {
+  border-color: #1D92C5;
+  background: #E6F7FF;
+  transform: scale(1.02);
+}
+
+.file-drop-zone.has-file {
+  border-color: #28a745;
+  background: #f0fff4;
+}
+
+.drop-zone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-icon {
+  font-size: 48px;
+  color: #ccc;
+}
+
+.drop-zone-content p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.file-types {
+  font-size: 12px !important;
+  color: #999 !important;
+}
+
+/* Выбранный файл */
+.selected-file {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.file-icon {
+  font-size: 24px;
+}
+
+.file-info {
+  flex: 1;
+  text-align: left;
+}
+
+.file-name {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.file-size {
+  display: block;
+  color: #666;
+  font-size: 12px;
+}
+
+.remove-file {
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.remove-file:hover {
+  background: #ff3742;
+  transform: scale(1.1);
+}
+
+/* Статус загрузки */
+.upload-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.upload-status.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.upload-status.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.upload-status.info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.status-icon {
+  font-size: 16px;
+}
+
+/* Кнопка загрузки */
+.upload-actions {
+  margin-bottom: 20px;
+}
+
+.upload-btn {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #1D92C5 0%, #4facfe 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(29, 146, 197, 0.3);
+}
+
+.upload-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Спиннер загрузки */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Информация об импорте */
+.upload-info {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px;
+  padding: 15px;
+  border-left: 4px solid #1D92C5;
+}
+
+.upload-info h4 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.upload-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.upload-info li {
+  color: #555;
+  font-size: 12px;
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .file-upload-container {
+    padding: 15px;
+  }
+  
+  .type-buttons {
+    flex-direction: column;
+  }
+  
+  .selected-file {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .file-info {
+    text-align: center;
+  }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.file-upload-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.api-key-input.pretty {
+  margin-bottom: 20px;
+}
+.api-key-input.pretty label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+}
+.api-key-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0 12px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.api-key-input-wrapper:focus-within {
+  border-color: #1D92C5;
+  box-shadow: 0 0 0 3px rgba(29, 146, 197, 0.1);
+}
+.api-key-icon {
+  font-size: 20px;
+  color: #1D92C5;
+  margin-right: 8px;
+}
+.api-key-input-wrapper input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  color: #333;
+  padding: 12px 0;
+  width: 100%;
+  font-family: inherit;
+}
+.api-key-input-wrapper input::placeholder {
+  color: #aaa;
+  font-weight: 400;
+} 

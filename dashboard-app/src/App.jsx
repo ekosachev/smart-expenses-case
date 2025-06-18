@@ -15,6 +15,7 @@ import CategoryStatisticsPage from './components/CategoryStatisticsPage'
 import ApiTest from './components/ApiTest'
 import Register from './components/Register'
 import Login from './components/Login'
+import FileUpload from './components/FileUpload'
 import car1 from './img_cars/2014-mercedes-benz-m-class-2012-mercedes-benz-m-class-2008-mercedes-benz-m-class-sport-utility-vehicle-mercedes-car-png-image-8230b0372dd015bcf5312eb17e2751ee-1.png';
 import car2 from './img_cars/car-audi-a3-audi-a4-car-3822c2bc08e2c2bce1d8ead0e70c7ddb-1.png';
 import car3 from './img_cars/maruti-suzuki-dzire-car-suzuki-ertiga-swift-dzire-f8a7d4ae19bd1c349dc080d9081ffd31.png';
@@ -325,6 +326,10 @@ function App() {
                   <img src="/placeholder-settings.svg" alt="API Тест Иконка" />
                   <span>API Test</span>
                 </li>
+                <li onClick={() => navigate('/import')}>
+                  <img src="/placeholder-upload.svg" alt="Импорт Иконка" />
+                  <span>Импорт данных</span>
+                </li>
               </ul>
             </nav>
             <div className="settings-logout">
@@ -364,6 +369,7 @@ function App() {
               <Route path="/charts" element={<ChartsPage />} />
               <Route path="/statistics/:category" element={<CategoryStatisticsPage />} />
               <Route path="/api-test" element={<ApiTest />} />
+              <Route path="/import" element={<FileUpload />} />
             </Routes>
           </main>
         </div>
