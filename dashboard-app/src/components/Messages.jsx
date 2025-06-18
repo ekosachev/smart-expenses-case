@@ -4,10 +4,14 @@ import messagesIcon from '../assets/messages.svg';
 import searchIcon from '../assets/other three dots.svg';
 import likePlacedIcon from '../assets/like placed.svg';
 import userOneIcon from '../assets/user one.svg';
+import userTwoIcon from '../assets/user two.svg';
+import userOnTheNetworkIcon from '../assets/user-on-the-network.svg';
 import videoIcon from '../assets/video.svg';
 import otherThreeDotsIcon from '../assets/other three dots.svg';
 import paperClipIcon from '../assets/paper clip attechment.svg';
 import sendIcon from '../assets/Filled.svg';
+
+const userIcons = [userOneIcon, userTwoIcon, userOnTheNetworkIcon];
 
 const Messages = () => {
   const [activeChat, setActiveChat] = useState({
@@ -25,17 +29,17 @@ const Messages = () => {
   });
 
   const pinnedContacts = [
-    { id: 1, name: 'Иван Петров', status: 'Печатает...', avatar: '/placeholder-user.svg', time: '16:30', unread: 2, online: true },
+    { id: 1, name: 'Иван Петров', status: 'Печатает...', avatar: userOneIcon, time: '16:30', unread: 2, online: true },
   ];
 
   const allMessageContacts = [
-    { id: 2, name: 'Денис Тамов', message: 'Привет всем!', avatar: '/placeholder-user2.svg', time: '9:36', unread: 0, delivered: true },
-    { id: 3, name: 'Ахмед Медведев', message: 'Вау, круто 🔥', avatar: '/placeholder-user3.svg', time: '1:15', unread: 0 },
-    { id: 4, name: 'Клавдия Маслова', message: 'Отлично', avatar: '/placeholder-user4.svg', time: '16:30', unread: 0 },
-    { id: 5, name: 'Новита Смирнова', message: 'да, хороший дизайн', avatar: '/placeholder-user5.svg', time: '16:30', unread: 2 },
-    { id: 6, name: 'Мила Носова', message: 'Потрясающе 🔥', avatar: '/placeholder-user6.svg', time: '20:20', unread: 1 },
-    { id: 7, name: 'Ихсан Салимов', message: 'Голосовое сообщение', avatar: '/placeholder-user7.svg', time: 'вчера', unread: 0, voice: true },
-    { id: 8, name: 'Адиль Иванов', message: 'опубликовать сейчас', avatar: '/placeholder-user8.svg', time: 'вчера', unread: 0, delivered: true },
+    { id: 2, name: 'Денис Тамов', message: 'Привет всем!', avatar: userTwoIcon, time: '9:36', unread: 0, delivered: true },
+    { id: 3, name: 'Ахмед Медведев', message: 'Вау, круто 🔥', avatar: userOnTheNetworkIcon, time: '1:15', unread: 0 },
+    { id: 4, name: 'Клавдия Маслова', message: 'Отлично', avatar: userOneIcon, time: '16:30', unread: 0 },
+    { id: 5, name: 'Новита Смирнова', message: 'да, хороший дизайн', avatar: userOneIcon, time: '16:30', unread: 2 },
+    { id: 6, name: 'Мила Носова', message: 'Потрясающе 🔥', avatar: userOneIcon, time: '20:20', unread: 1 },
+    { id: 7, name: 'Ихсан Салимов', message: 'Голосовое сообщение', avatar: userOneIcon, time: 'вчера', unread: 0, voice: true },
+    { id: 8, name: 'Адиль Иванов', message: 'опубликовать сейчас', avatar: userOneIcon, time: 'вчера', unread: 0, delivered: true },
   ];
 
   return (
@@ -114,7 +118,7 @@ const Messages = () => {
           <div className="chat-messages">
             {activeChat.messages.map(message => (
               <div key={message.id} className={`message-bubble ${message.sender}`}>
-                {message.sender === 'other' && <img src={activeChat.avatar} alt="Аватар" className="message-avatar" />}
+                {message.sender === 'other' && <img src={userIcons[message.id % userIcons.length]} alt="Аватар" className="message-avatar" />}
                 <div className="message-content-wrapper">
                   {message.content === 'voice' ? (
                     <div className="voice-message">
@@ -127,7 +131,7 @@ const Messages = () => {
                   )}
                   {message.sender === 'self' && <span className="message-time">{message.time}</span>}
                 </div>
-                {message.sender === 'self' && <img src={activeChat.avatar} alt="Аватар" className="message-avatar" />}
+                {message.sender === 'self' && <img src={userOneIcon} alt="Аватар" className="message-avatar" />}
               </div>
             ))}
           </div>

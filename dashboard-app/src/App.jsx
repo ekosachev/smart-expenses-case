@@ -35,6 +35,9 @@ import settingsIcon from './assets/settings.svg';
 import signOutIcon from './assets/sign out.svg';
 import notificationIcon from './assets/notification.svg';
 import userOneIcon from './assets/user one.svg';
+import linealDisplayIcon from './assets/lineal display.svg';
+import paperClipIcon from './assets/paper clip attechment.svg';
+import autoIcon from './assets/auto.svg';
 import './App.css'
 
 function App() {
@@ -322,7 +325,7 @@ function App() {
                   <span>Дашборд</span>
                 </li>
                 <li onClick={() => navigate('/autopark')}>
-                  <img src="/placeholder-autopark.svg" alt="Автопарк Иконка" />
+                  <img src={autoIcon} alt="Автопарк Иконка" />
                   <span>Автопарк</span>
                 </li>
                 <li onClick={() => navigate('/calendar')}>
@@ -334,11 +337,11 @@ function App() {
                   <span>Messages</span>
                 </li>
                 <li onClick={() => navigate('/api-test')}>
-                  <img src="/placeholder-settings.svg" alt="API Тест Иконка" />
+                  <img src={settingsIcon} alt="API Тест Иконка" />
                   <span>API Test</span>
                 </li>
                 <li onClick={() => navigate('/import')}>
-                  <img src="/placeholder-upload.svg" alt="Импорт Иконка" />
+                  <img src={paperClipIcon} alt="Импорт Иконка" />
                   <span>Импорт данных</span>
                 </li>
               </ul>

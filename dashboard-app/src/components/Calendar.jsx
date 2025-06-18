@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './Calendar.css';
 import calendarIcon from '../assets/dashboard icon.svg';
 import otherThreeDotsIcon from '../assets/other three dots.svg';
+import userOneIcon from '../assets/user one.svg';
+import userTwoIcon from '../assets/user two.svg';
+import userOnTheNetworkIcon from '../assets/user-on-the-network.svg';
 
 const Calendar = () => {
   // State for calendar logic
@@ -25,6 +28,8 @@ const Calendar = () => {
     { time: '09:00', title: 'Drift Series Firs Round', type: 'JDM', users: ['/placeholder-user.svg', '/placeholder-user2.svg'], extraUsers: 8, color: '#8A2BE2' }, // Purple
     { time: '12:00', title: 'Drift Series Firs Round', type: 'JDM', users: ['/placeholder-user.svg', '/placeholder-user2.svg'], extraUsers: 5, color: '#6BFCBA' }, // Светло-зеленый
   ];
+
+  const userIcons = [userOneIcon, userTwoIcon, userOnTheNetworkIcon];
 
   const getDaysInMonth = (date) => {
     const year = date.getFullYear();
@@ -139,8 +144,8 @@ const Calendar = () => {
                     <div className="event-type">{event.type}</div>
                   </div>
                   <div className="event-users">
-                    {event.users.map((userImg, userIndex) => (
-                      <img key={userIndex} src={userImg} alt="User" className="event-user-avatar" />
+                    {userIcons.map((icon, idx) => (
+                      <img key={idx} src={icon} alt="User" className="event-user-avatar" />
                     ))}
                     {event.extraUsers && <span className="extra-users">+{event.extraUsers}</span>}
                   </div>

@@ -136,10 +136,16 @@ body {
 
 .sidebar .nav-menu li img,
 .sidebar .settings-logout li img {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  filter: grayscale(100%); /* Для плейсхолдеров иконок */
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  filter: none;
+  vertical-align: middle;
+  transition: transform 0.2s;
+}
+
+.sidebar .settings-logout li:hover img {
+  transform: scale(1.1) rotate(-5deg);
 }
 
 .sidebar .nav-menu li.active img {
@@ -292,7 +298,7 @@ body {
 }
 
 .widget.fuel .percentage-circle {
-  background: linear-gradient(135deg, #6BFCBA 0%, #B6D9FC 100%); /* Градиент знака */
+  background: linear-gradient(135deg, #82C4F8 0%, #B6D9FC 100%); /* Градиент знака */
 }
 
 .widget.taxes .percentage-circle {
@@ -300,7 +306,7 @@ body {
 }
 
 .widget.repair .percentage-circle {
-  background: linear-gradient(135deg, #B6D9FC 0%, #6BFCBA 100%); /* Легкий градиент */
+  background: linear-gradient(135deg, #B6D9FC 0%, #82C4F8 100%); /* Легкий градиент */
 }
 
 .widget.other .percentage-circle {
@@ -728,7 +734,7 @@ body {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background-color: rgba(107, 252, 186, 0.2); /* Полупрозрачный светло-зеленый */
+  background-color: rgba(82, 196, 248, 0.2); /* Полупрозрачный светло-голубой */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -768,8 +774,8 @@ body {
 }
 
 .car-details-page .event-item .event-content .event-status {
-  background-color: rgba(107, 252, 186, 0.2); /* Полупрозрачный светло-зеленый */
-  color: #6BFCBA; /* Светло-зеленый */
+  background-color: rgba(82, 196, 248, 0.2); /* Полупрозрачный светло-голубой */
+  color: #82C4F8; /* Светло-голубой */
   padding: 4px 8px;
   border-radius: 5px;
   font-size: 12px;
@@ -1124,4 +1130,17 @@ body {
 
 .show-ai-recommendations-btn:hover {
   background-color: #0056b3;
+}
+
+.form-row .input-icon {
+  width: 22px;
+  height: 22px;
+  left: 0.7rem;
+  color: #888;
+  opacity: 0.9;
+}
+
+.form-row .input-wrapper input,
+.form-row .input-wrapper select {
+  padding-left: 2.7rem;
 }

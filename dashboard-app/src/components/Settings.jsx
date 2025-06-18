@@ -3,6 +3,7 @@ import './Settings.css';
 import emailIcon from '../assets/email.svg';
 import genderIcon from '../assets/gender.svg';
 import homeIcon from '../assets/home.svg';
+import otherThreeDotsIcon from '../assets/other three dots.svg';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('profile'); // Default to Profile tab
@@ -102,7 +103,7 @@ const Settings = () => {
                 <div className="form-group with-icon">
                   <label htmlFor="dateOfBirth">Date Of Birth</label>
                   <div className="input-wrapper">
-                    <img src="/placeholder-birthday.svg" alt="Birthday Icon" className="input-icon" />
+                    <img src={otherThreeDotsIcon} alt="Birthday Icon" className="input-icon" />
                     <input
                       type="text"
                       id="dateOfBirth"
