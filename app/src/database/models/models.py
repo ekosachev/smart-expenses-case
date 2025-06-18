@@ -8,25 +8,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
 
-class User(Base):
-    __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, unique=True)
-
-    first_name: Mapped[Optional[str]]
-    last_name: Mapped[Optional[str]]
-    login: Mapped[str] = mapped_column(unique=True)
-    password: Mapped[str]
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
-
-    employments: Mapped[Set["Company"]] = relationship(
-        secondary="companies_to_users", back_populates="employees"
-    )
-
-    expenses: Mapped[Set["Expense"]] = relationship(back_populates="driver")
-
-
 class Role(Base):
     __tablename__ = "roles"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, unique=True)
@@ -64,7 +45,7 @@ class Company(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, unique=True)
 
     name: Mapped[str] = mapped_column(nullable=False)
-    employees: Mapped[Set[User]] = relationship(
+    employees: Mapped[Set["User"]] = relationship(
         secondary="companies_to_users", back_populates="employments"
     )
 
@@ -83,9 +64,9 @@ class Employment(Base):
     id_company: Mapped[int] = mapped_column(ForeignKey("companies.id"))
     id_role: Mapped[int] = mapped_column(ForeignKey("roles.id"))
 
-    user: Mapped[User] = relationship(back_populates="employments")
-    company: Mapped[Company] = relationship(back_populates="employments")
-    role: Mapped[Role] = relationship(back_populates="employments")
+    user: Mapped["User"] = relationship()
+    company: Mapped[Company] = relationship()
+    role: Mapped[Role] = relationship()
 
 
 class VehicleType(enum.StrEnum):
@@ -129,7 +110,7 @@ class Vehicle(Base):
 
     # ORM-отношения
     company: Mapped[Company] = relationship(back_populates="vehicles")
-    creator: Mapped[User] = relationship()
+    creator: Mapped["User"] = relationship()
     expenses: Mapped[Set["Expense"]] = relationship(back_populates="vehicle")
 
 
@@ -188,6 +169,29 @@ class Expense(Base):
     company: Mapped["Company"] = relationship(back_populates="expenses")
     category: Mapped["ExpenseCategory"] = relationship()
     vehicle: Mapped["Vehicle"] = relationship(back_populates="expenses")
-    driver: Mapped["User"] = relationship(back_populates="expenses")
+    driver: Mapped["User"] = relationship(
+        back_populates="expenses", foreign_keys=[driver_id]
+    )
     creator: Mapped["User"] = relationship(foreign_keys=[created_by])
     approver: Mapped["User"] = relationship(foreign_keys=[approver_id])
+
+
+class User(Base):
+    __tablename__ = "users"
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, unique=True)
+
+    first_name: Mapped[Optional[str]]
+    last_name: Mapped[Optional[str]]
+    login: Mapped[str] = mapped_column(unique=True)
+    password: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+
+    employments: Mapped[Set["Company"]] = relationship(
+        secondary="companies_to_users", back_populates="employees"
+    )
+
+    expenses: Mapped[Set["Expense"]] = relationship(
+        back_populates="driver", foreign_keys=[Expense.driver_id]
+    )
