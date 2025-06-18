@@ -13,6 +13,8 @@ import Messages from './components/Messages'
 import ChartsPage from './components/ChartsPage'
 import CategoryStatisticsPage from './components/CategoryStatisticsPage'
 import ApiTest from './components/ApiTest'
+import Register from './components/Register'
+import Login from './components/Login'
 import car1 from './img_cars/2014-mercedes-benz-m-class-2012-mercedes-benz-m-class-2008-mercedes-benz-m-class-sport-utility-vehicle-mercedes-car-png-image-8230b0372dd015bcf5312eb17e2751ee-1.png';
 import car2 from './img_cars/car-audi-a3-audi-a4-car-3822c2bc08e2c2bce1d8ead0e70c7ddb-1.png';
 import car3 from './img_cars/maruti-suzuki-dzire-car-suzuki-ertiga-swift-dzire-f8a7d4ae19bd1c349dc080d9081ffd31.png';
@@ -290,78 +292,83 @@ function App() {
   };
 
   return (
-    <div className="dashboard-container">
-      <aside className="sidebar">
-        {/* Боковая панель */}
-        <div className="logo">
-          <img src="/placeholder-logo.svg" alt="Motiv. Logo" />
-          <span>Motiv.</span>
-        </div>
-        <nav className="nav-menu">
-          <ul>
-            <li onClick={() => navigate('/')}>
-              <img src="/placeholder-dashboard.svg" alt="Дашборд Иконка" />
-              <span>Дашборд</span>
-            </li>
-            <li onClick={() => navigate('/autopark')}>
-              <img src="/placeholder-autopark.svg" alt="Автопарк Иконка" />
-              <span>Автопарк</span>
-            </li>
-            <li onClick={() => navigate('/calendar')}>
-              <img src="/placeholder-calendar.svg" alt="Календарь Иконка" />
-              <span>Calendar</span>
-            </li>
-            <li onClick={() => navigate('/messages')}>
-              <img src="/placeholder-messages.svg" alt="Сообщения Иконка" />
-              <span>Messages</span>
-            </li>
-            <li onClick={() => navigate('/api-test')}>
-              <img src="/placeholder-settings.svg" alt="API Тест Иконка" />
-              <span>API Test</span>
-            </li>
-          </ul>
-        </nav>
-        <div className="settings-logout">
-          <ul>
-            <li onClick={() => navigate('/settings')}>
-              <img src="/placeholder-settings.svg" alt="Настройки Иконка" />
-              <span>Settings</span>
-            </li>
-            <li>
-              <img src="/placeholder-logout.svg" alt="Выход Иконка" />
-              <span>Log out</span>
-            </li>
-          </ul>
-        </div>
-      </aside>
-      <main className="main-content">
-        {/* Верхний бар */}
-        <header className="top-bar">
-          <div className="search-bar">
-            <input type="text" placeholder="Search or type" />
-            <img src="/placeholder-search.svg" alt="Иконка Поиска" />
-          </div>
-          <div className="user-profile">
-            <img src="/placeholder-bell.svg" alt="Иконка Уведомлений" />
-            <img src="/placeholder-user.svg" alt="Иконка Пользователя" />
-            <span></span> {/* Имя пользователя или другая информация */}
-          </div>
-        </header>
+    <Routes>
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/*" element={
+        <div className="dashboard-container">
+          <aside className="sidebar">
+            {/* Боковая панель */}
+            <div className="logo">
+              <img src="/placeholder-logo.svg" alt="Motiv. Logo" />
+              <span>Motiv.</span>
+            </div>
+            <nav className="nav-menu">
+              <ul>
+                <li onClick={() => navigate('/')}>
+                  <img src="/placeholder-dashboard.svg" alt="Дашборд Иконка" />
+                  <span>Дашборд</span>
+                </li>
+                <li onClick={() => navigate('/autopark')}>
+                  <img src="/placeholder-autopark.svg" alt="Автопарк Иконка" />
+                  <span>Автопарк</span>
+                </li>
+                <li onClick={() => navigate('/calendar')}>
+                  <img src="/placeholder-calendar.svg" alt="Календарь Иконка" />
+                  <span>Calendar</span>
+                </li>
+                <li onClick={() => navigate('/messages')}>
+                  <img src="/placeholder-messages.svg" alt="Сообщения Иконка" />
+                  <span>Messages</span>
+                </li>
+                <li onClick={() => navigate('/api-test')}>
+                  <img src="/placeholder-settings.svg" alt="API Тест Иконка" />
+                  <span>API Test</span>
+                </li>
+              </ul>
+            </nav>
+            <div className="settings-logout">
+              <ul>
+                <li onClick={() => navigate('/settings')}>
+                  <img src="/placeholder-settings.svg" alt="Настройки Иконка" />
+                  <span>Settings</span>
+                </li>
+                <li>
+                  <img src="/placeholder-logout.svg" alt="Выход Иконка" />
+                  <span>Log out</span>
+                </li>
+              </ul>
+            </div>
+          </aside>
+          <main className="main-content">
+            {/* Верхний бар */}
+            <header className="top-bar">
+              <div className="search-bar">
+                <input type="text" placeholder="Search or type" />
+                <img src="/placeholder-search.svg" alt="Иконка Поиска" />
+              </div>
+              <div className="user-profile">
+                <img src="/placeholder-bell.svg" alt="Иконка Уведомлений" />
+                <img src="/placeholder-user.svg" alt="Иконка Пользователя" />
+                <span></span> {/* Имя пользователя или другая информация */}
+              </div>
+            </header>
 
-        <Routes>
-          <Route path="/" element={<DashboardContent />} />
-          <Route path="/autopark" element={<Autopark onSelectCar={handleSelectCar} />} />
-          <Route path="/autopark/:carId" element={<CarDetailsWrapper />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/charts" element={<ChartsPage />} />
-          <Route path="/statistics/:category" element={<CategoryStatisticsPage />} />
-          <Route path="/api-test" element={<ApiTest />} />
-        </Routes>
-
-      </main>
-    </div>
+            <Routes>
+              <Route path="/" element={<DashboardContent />} />
+              <Route path="/autopark" element={<Autopark onSelectCar={handleSelectCar} />} />
+              <Route path="/autopark/:carId" element={<CarDetailsWrapper />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/charts" element={<ChartsPage />} />
+              <Route path="/statistics/:category" element={<CategoryStatisticsPage />} />
+              <Route path="/api-test" element={<ApiTest />} />
+            </Routes>
+          </main>
+        </div>
+      } />
+    </Routes>
   )
 }
 
