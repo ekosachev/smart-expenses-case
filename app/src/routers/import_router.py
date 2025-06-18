@@ -54,6 +54,33 @@ async def import_expenses(params: dict = Depends(common_import_params)):
     )
 
 
+@router.post("/all", response_model=ImportResult)
+async def import_all(params: dict = Depends(common_import_params)):
+    data = params["data"]
+    results = {}
+    imported_count = 0
+    # Если это JSON с ключами vehicles и/или expenses
+    if isinstance(data, dict):
+        if "vehicles" in data:
+            res = await import_service.import_vehicles(
+                params["session"], data["vehicles"], params["company_id"], params["user_id"]
+            )
+            results["vehicles"] = res
+            imported_count += getattr(res, "imported_count", 0)
+        if "expenses" in data:
+            res = await import_service.import_expenses(
+                params["session"], data["expenses"], params["company_id"], params["user_id"]
+            )
+            results["expenses"] = res
+            imported_count += getattr(res, "imported_count", 0)
+        if not results:
+            raise HTTPException(status_code=400, detail="В файле нет ключей 'vehicles' или 'expenses'")
+        # Возвращаем общий результат
+        return {"imported_count": imported_count, "details": results}
+    else:
+        raise HTTPException(status_code=400, detail="Формат файла должен быть JSON с ключами 'vehicles' и/или 'expenses'")
+
+
 @router.get("/template/vehicles")
 async def download_vehicles_template(
     format: str = Query("xlsx", description="Формат шаблона: csv или xlsx"),

@@ -2,88 +2,41 @@ import React, { useState, useRef } from 'react';
 import './FileUpload.css';
 
 const FileUpload = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [mode, setMode] = useState('separate'); // 'separate' | 'mixed'
+  const [vehicleFile, setVehicleFile] = useState(null);
+  const [expenseFile, setExpenseFile] = useState(null);
+  const [mixedFile, setMixedFile] = useState(null);
   const [companyId, setCompanyId] = useState(1);
   const [apiKey, setApiKey] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
-  const fileInputRef = useRef(null);
+  const vehicleInputRef = useRef(null);
+  const expenseInputRef = useRef(null);
+  const mixedInputRef = useRef(null);
 
-  const handleFileSelect = (event) => {
+  const handleFileSelect = (event, type) => {
     const file = event.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      setUploadStatus(null);
-    }
+    if (!file) return;
+    if (type === 'vehicle') setVehicleFile(file);
+    if (type === 'expense') setExpenseFile(file);
+    if (type === 'mixed') setMixedFile(file);
+    setUploadStatus(null);
   };
 
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
+  const handleRemoveFile = (type) => {
+    if (type === 'vehicle') {
+      setVehicleFile(null);
+      if (vehicleInputRef.current) vehicleInputRef.current.value = '';
     }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setSelectedFile(e.dataTransfer.files[0]);
-      setUploadStatus(null);
+    if (type === 'expense') {
+      setExpenseFile(null);
+      if (expenseInputRef.current) expenseInputRef.current.value = '';
     }
-  };
-
-  const handleUpload = async () => {
-    if (!selectedFile) {
-      setUploadStatus({ type: 'error', message: 'Пожалуйста, выберите файл' });
-      return;
+    if (type === 'mixed') {
+      setMixedFile(null);
+      if (mixedInputRef.current) mixedInputRef.current.value = '';
     }
-
-    setIsUploading(true);
-    setUploadStatus({ type: 'info', message: 'Загрузка файла...' });
-
-    try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('company_id', companyId);
-      formData.append('api_key', apiKey);
-
-      const response = await fetch(`http://localhost:8000/import/all`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setUploadStatus({ 
-          type: 'success', 
-          message: `Успешно импортировано: ${result.imported_count || ''}` 
-        });
-        setSelectedFile(null);
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-      } else {
-        const errorData = await response.json();
-        setUploadStatus({ 
-          type: 'error', 
-          message: `Ошибка: ${errorData.detail || 'Неизвестная ошибка'}` 
-        });
-      }
-    } catch (error) {
-      setUploadStatus({ 
-        type: 'error', 
-        message: `Ошибка соединения: ${error.message}` 
-      });
-    } finally {
-      setIsUploading(false);
-    }
+    setUploadStatus(null);
   };
 
   const getFileIcon = (filename) => {
@@ -94,11 +47,87 @@ const FileUpload = () => {
     return '📄';
   };
 
+  const handleUpload = async () => {
+    setIsUploading(true);
+    setUploadStatus({ type: 'info', message: 'Загрузка файла...' });
+    try {
+      if (mode === 'separate') {
+        let results = [];
+        if (vehicleFile) {
+          const formData = new FormData();
+          formData.append('file', vehicleFile);
+          formData.append('company_id', companyId);
+          formData.append('api_key', apiKey);
+          const response = await fetch('http://localhost:8000/import/vehicles', {
+            method: 'POST',
+            body: formData,
+          });
+          const result = await response.json();
+          results.push({ type: 'ТС', ...result, ok: response.ok });
+        }
+        if (expenseFile) {
+          const formData = new FormData();
+          formData.append('file', expenseFile);
+          formData.append('company_id', companyId);
+          formData.append('api_key', apiKey);
+          const response = await fetch('http://localhost:8000/import/expenses', {
+            method: 'POST',
+            body: formData,
+          });
+          const result = await response.json();
+          results.push({ type: 'Расходы', ...result, ok: response.ok });
+        }
+        if (results.length === 0) {
+          setUploadStatus({ type: 'error', message: 'Выберите хотя бы один файл' });
+        } else if (results.some(r => !r.ok)) {
+          setUploadStatus({ type: 'error', message: results.map(r => r.ok ? '' : `Ошибка (${r.type}): ${r.detail || 'Неизвестная ошибка'}`).join(' ') });
+        } else {
+          setUploadStatus({ type: 'success', message: results.map(r => `Импортировано (${r.type}): ${r.imported_count || 0}`).join(' | ') });
+          setVehicleFile(null);
+          setExpenseFile(null);
+          if (vehicleInputRef.current) vehicleInputRef.current.value = '';
+          if (expenseInputRef.current) expenseInputRef.current.value = '';
+        }
+      } else if (mode === 'mixed') {
+        if (!mixedFile) {
+          setUploadStatus({ type: 'error', message: 'Выберите файл' });
+          setIsUploading(false);
+          return;
+        }
+        const formData = new FormData();
+        formData.append('file', mixedFile);
+        formData.append('company_id', companyId);
+        formData.append('api_key', apiKey);
+        const response = await fetch('http://localhost:8000/import/all', {
+          method: 'POST',
+          body: formData,
+        });
+        const result = await response.json();
+        if (response.ok) {
+          setUploadStatus({ type: 'success', message: `Импортировано: ${result.imported_count || 0}` });
+          setMixedFile(null);
+          if (mixedInputRef.current) mixedInputRef.current.value = '';
+        } else {
+          setUploadStatus({ type: 'error', message: `Ошибка: ${result.detail || 'Неизвестная ошибка'}` });
+        }
+      }
+    } catch (error) {
+      setUploadStatus({ type: 'error', message: `Ошибка соединения: ${error.message}` });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <div className="file-upload-container">
       <div className="file-upload-header">
         <h3>📁 Импорт данных</h3>
-        <p>Загрузите файл (транспорт + расходы) для импорта в базу данных</p>
+        <p>Загрузите таблицы с транспортом и расходами или смешанный файл</p>
+      </div>
+
+      <div className="import-mode-switch">
+        <button className={mode === 'separate' ? 'active' : ''} onClick={() => setMode('separate')}>Два файла</button>
+        <button className={mode === 'mixed' ? 'active' : ''} onClick={() => setMode('mixed')}>Смешанный файл</button>
       </div>
 
       <div className="company-selector">
@@ -126,53 +155,84 @@ const FileUpload = () => {
         </div>
       </div>
 
-      <div 
-        className={`file-drop-zone ${dragActive ? 'drag-active' : ''} ${selectedFile ? 'has-file' : ''}`}
-        onDragEnter={handleDrag}
-        onDragLeave={handleDrag}
-        onDragOver={handleDrag}
-        onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
-      >
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".csv,.xlsx,.xls,.json"
-          onChange={handleFileSelect}
-          style={{ display: 'none' }}
-        />
-        
-        {selectedFile ? (
-          <div className="selected-file">
-            <span className="file-icon">{getFileIcon(selectedFile.name)}</span>
-            <div className="file-info">
-              <span className="file-name">{selectedFile.name}</span>
-              <span className="file-size">
-                {(selectedFile.size / 1024).toFixed(1)} KB
-              </span>
+      {mode === 'separate' && (
+        <>
+          <div className="file-drop-zone" onClick={() => vehicleInputRef.current?.click()}>
+            <input
+              ref={vehicleInputRef}
+              type="file"
+              accept=".csv,.xlsx,.xls,.json"
+              onChange={e => handleFileSelect(e, 'vehicle')}
+              style={{ display: 'none' }}
+            />
+            {vehicleFile ? (
+              <div className="selected-file">
+                <span className="file-icon">{getFileIcon(vehicleFile.name)}</span>
+                <div className="file-info">
+                  <span className="file-name">{vehicleFile.name}</span>
+                  <span className="file-size">{(vehicleFile.size / 1024).toFixed(1)} KB</span>
+                </div>
+                <button className="remove-file" onClick={e => { e.stopPropagation(); handleRemoveFile('vehicle'); }}>✕</button>
+              </div>
+            ) : (
+              <div className="drop-zone-content">
+                <span className="upload-icon">📁</span>
+                <p>Таблица с транспортом (CSV, XLSX, JSON)</p>
+              </div>
+            )}
+          </div>
+          <div className="file-drop-zone" onClick={() => expenseInputRef.current?.click()}>
+            <input
+              ref={expenseInputRef}
+              type="file"
+              accept=".csv,.xlsx,.xls,.json"
+              onChange={e => handleFileSelect(e, 'expense')}
+              style={{ display: 'none' }}
+            />
+            {expenseFile ? (
+              <div className="selected-file">
+                <span className="file-icon">{getFileIcon(expenseFile.name)}</span>
+                <div className="file-info">
+                  <span className="file-name">{expenseFile.name}</span>
+                  <span className="file-size">{(expenseFile.size / 1024).toFixed(1)} KB</span>
+                </div>
+                <button className="remove-file" onClick={e => { e.stopPropagation(); handleRemoveFile('expense'); }}>✕</button>
+              </div>
+            ) : (
+              <div className="drop-zone-content">
+                <span className="upload-icon">📁</span>
+                <p>Таблица с расходами (CSV, XLSX, JSON)</p>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+      {mode === 'mixed' && (
+        <div className="file-drop-zone" onClick={() => mixedInputRef.current?.click()}>
+          <input
+            ref={mixedInputRef}
+            type="file"
+            accept=".json,.csv,.xlsx,.xls"
+            onChange={e => handleFileSelect(e, 'mixed')}
+            style={{ display: 'none' }}
+          />
+          {mixedFile ? (
+            <div className="selected-file">
+              <span className="file-icon">{getFileIcon(mixedFile.name)}</span>
+              <div className="file-info">
+                <span className="file-name">{mixedFile.name}</span>
+                <span className="file-size">{(mixedFile.size / 1024).toFixed(1)} KB</span>
+              </div>
+              <button className="remove-file" onClick={e => { e.stopPropagation(); handleRemoveFile('mixed'); }}>✕</button>
             </div>
-            <button 
-              className="remove-file"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedFile(null);
-                setUploadStatus(null);
-                if (fileInputRef.current) {
-                  fileInputRef.current.value = '';
-                }
-              }}
-            >
-              ✕
-            </button>
-          </div>
-        ) : (
-          <div className="drop-zone-content">
-            <span className="upload-icon">📁</span>
-            <p>Перетащите файл сюда или кликните для выбора</p>
-            <p className="file-types">Поддерживаемые форматы: CSV, XLSX, JSON</p>
-          </div>
-        )}
-      </div>
+          ) : (
+            <div className="drop-zone-content">
+              <span className="upload-icon">📁</span>
+              <p>Смешанный файл (JSON, CSV, XLSX)</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {uploadStatus && (
         <div className={`upload-status ${uploadStatus.type}`}>
@@ -188,7 +248,7 @@ const FileUpload = () => {
         <button
           className="upload-btn"
           onClick={handleUpload}
-          disabled={!selectedFile || isUploading}
+          disabled={isUploading}
         >
           {isUploading ? (
             <div className="loading-spinner">
@@ -196,7 +256,7 @@ const FileUpload = () => {
               <span>Загрузка...</span>
             </div>
           ) : (
-            '📤 Загрузить файл'
+            '📤 Загрузить'
           )}
         </button>
       </div>
@@ -204,7 +264,7 @@ const FileUpload = () => {
       <div className="upload-info">
         <h4>Информация об импорте:</h4>
         <ul>
-          <li>• Файл может содержать транспорт и расходы одновременно</li>
+          <li>• Можно загрузить транспорт и расходы по отдельности или смешанным файлом</li>
           <li>• Поддерживаются форматы CSV, Excel, JSON</li>
           <li>• Максимальный размер файла: 10MB</li>
           <li>• Данные будут добавлены в базу PostgreSQL</li>
