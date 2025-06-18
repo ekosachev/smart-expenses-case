@@ -4,19 +4,21 @@ import csv
 from datetime import datetime
 
 def export_expenses_with_categories():
-    """Экспорт таблицы expenses с названиями категорий вместо ID"""
+    """Экспорт таблицы expenses с нужными столбцами: license_plate, expense_date, description"""
     conn = sqlite3.connect('data.db')
     
-    # SQL запрос для объединения expenses с categories
+    # SQL запрос для объединения expenses с categories и vehicles
     query = """
     SELECT 
-        e.id,
-        e.date,
+        v.plate_number AS license_plate,
+        e.date AS expense_date,
+        '' AS description,
         e.amount,
         c.name as category_name,
         e.ID_car
     FROM expenses e
     LEFT JOIN categories c ON e.category_id = c.id
+    LEFT JOIN vehicles v ON e.ID_car = v.id
     ORDER BY e.date
     """
     
