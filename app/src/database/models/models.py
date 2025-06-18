@@ -2,9 +2,8 @@ import enum
 from datetime import date, datetime
 from typing import Optional, Set
 
-from sqlalchemy import Date, DateTime, ForeignKey, String, func
+from sqlalchemy import DateTime, ForeignKey, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.util.typing import is_a_type
 
 from .base import Base
 

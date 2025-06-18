@@ -1,8 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Form, Depends, Query
-from fastapi.responses import StreamingResponse
 from src.services.import_service import ImportService
 from src.schemas.import_schemas import VehicleCSVRow, ExpenseCSVRow, ImportResult
-import logging
 
 from src.database.db import get_session
 from src.services.auth_utils import get_current_user
@@ -72,3 +70,4 @@ async def download_expenses_template(
     """Скачать шаблон для импорта расходов"""
     columns = list(ExpenseCSVRow.model_json_schema()["properties"].keys())
     return import_service.generate_template(format, columns)
+
