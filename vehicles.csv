@@ -1,4 +1,4 @@
-﻿id,plate_number,manufacturer,model,year,type,cargo_capacity,passenger_capacity,fuel_consumption,mileage,price,rent_price,total_mileage
+﻿id,license_plate,make,model,year,vehicle_type,carrying_capacity,passenger_capacity,fuel_consumption_rate,current_mileage,price,rent_price,total_mileage
 1,ХВ792ХС,ГАЗ,ГАЗель NEXT,2024,грузовой,14325,2,12.190696076890701,0,1743962,5063,200969
 2,СК833УХ,КАМАЗ,65115,2021,грузовой,7723,2,29.492090462838537,0,4323054,4054,241719
 3,ХО448МЕ,ГАЗ,Соболь,2020,грузовой,3849,2,12.556475060280887,0,2388662,4736,201269
