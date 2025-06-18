@@ -1,31 +1,16 @@
-from datetime import datetime
+import asyncio
 import json
+import os
+import dotenv
+from dotenv import load_dotenv
 import requests
 from typing import Dict, Any
-
-from src.params.config import config
-from src.schemas.expense_query import ExpenseQueryResponse
-
-
-async def get_llm_analysis(statistics: ExpenseQueryResponse) -> str:
-    # Создаем экземпляр LLM модели
-    rag_model = LLMModel()
-
-    # Получаем анализ расходов
-    analysis = rag_model.analyze_expenses(statistics.model_dump())
-
-    dt = datetime.now()
-    filename = f"./expense_analysis_results/expenses_analysis_{dt.strftime('%Y%m%dT%h%m%s')}.md"
-    # Сохраняем результат в текстовый файл
-    with open(filename, "w", encoding="utf-8") as file:
-        file.write(analysis)
-
-    return filename
 
 
 class LLMModel:
     def __init__(self):
-        self.api_token = config.llm_api_key
+        load_dotenv()
+        self.api_token = os.getenv("API_LLM")
         self.base_url = "https://llm.chutes.ai/v1/chat/completions"
         self.headers = {
             "Authorization": f"Bearer {self.api_token}",
@@ -90,8 +75,9 @@ class LLMModel:
                                 )
                                 if content:
                                     full_response += content
-                    except Exception as _:
+                    except:
                         continue
             return full_response
         except Exception as e:
             return f"Ошибка при анализе расходов: {str(e)}"
+
