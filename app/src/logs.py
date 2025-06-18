@@ -1,12 +1,11 @@
 import logging
+from src.params.config import config
 
-def get_logger(name):
-    """Создает и возвращает логгер"""
+
+def get_logger(name: str, level: int = logging.INFO, tags: dict | None = None):
+    logging.basicConfig()
     logger = logging.getLogger(name)
-    if not logger.handlers:
-        handler = logging.StreamHandler()
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        logger.setLevel(logging.INFO)
-    return logger 
+    logger.setLevel(level)
+    return logger
+
+

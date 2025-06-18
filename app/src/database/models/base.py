@@ -1,3 +1,11 @@
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase, Mapped
 
-Base = declarative_base() 
+
+class Base(DeclarativeBase):
+    id: Mapped[int]
+    is_active: Mapped[bool]
+
+    async def update(self, **kwargs):
+        for key, val in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, val)
