@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './Settings.css';
+import emailIcon from '../assets/email.svg';
+import genderIcon from '../assets/gender.svg';
+import homeIcon from '../assets/home.svg';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('profile'); // Default to Profile tab
@@ -56,7 +59,7 @@ const Settings = () => {
                 <div className="form-group with-icon">
                   <label htmlFor="liveIn">Live in</label>
                   <div className="input-wrapper">
-                    <img src="/placeholder-home.svg" alt="Home Icon" className="input-icon" />
+                    <img src={homeIcon} alt="Home Icon" className="input-icon" />
                     <input
                       type="text"
                       id="liveIn"
@@ -69,7 +72,7 @@ const Settings = () => {
                 <div className="form-group with-icon">
                   <label htmlFor="streetAddress">Street Address</label>
                   <div className="input-wrapper">
-                    <img src="/placeholder-home.svg" alt="Home Icon" className="input-icon" />
+                    <img src={homeIcon} alt="Home Icon" className="input-icon" />
                     <input
                       type="text"
                       id="streetAddress"
@@ -84,7 +87,7 @@ const Settings = () => {
               <div className="form-group with-icon">
                 <label htmlFor="emailAddress">Email Address</label>
                 <div className="input-wrapper">
-                  <img src="/placeholder-mail.svg" alt="Mail Icon" className="input-icon" />
+                  <img src={emailIcon} alt="Mail Icon" className="input-icon" />
                   <input
                     type="email"
                     id="emailAddress"
@@ -112,7 +115,7 @@ const Settings = () => {
                 <div className="form-group with-icon">
                   <label htmlFor="gender">Gender</label>
                   <div className="input-wrapper">
-                    <img src="/placeholder-gender-male.svg" alt="Gender Icon" className="input-icon" />
+                    <img src={genderIcon} alt="Gender Icon" className="input-icon" />
                     <select
                       id="gender"
                       name="gender"

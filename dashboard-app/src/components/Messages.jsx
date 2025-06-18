@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 import './Messages.css';
+import messagesIcon from '../assets/messages.svg';
+import searchIcon from '../assets/other three dots.svg';
+import likePlacedIcon from '../assets/like placed.svg';
+import userOneIcon from '../assets/user one.svg';
+import videoIcon from '../assets/video.svg';
+import otherThreeDotsIcon from '../assets/other three dots.svg';
+import paperClipIcon from '../assets/paper clip attechment.svg';
+import sendIcon from '../assets/Filled.svg';
 
 const Messages = () => {
   const [activeChat, setActiveChat] = useState({
@@ -33,13 +41,13 @@ const Messages = () => {
   return (
     <div className="messages-container">
       <h2>Сообщения
-        <img src="/placeholder-pencil.svg" alt="Новое сообщение" className="new-message-icon" />
+        <img src={messagesIcon} alt="Новое сообщение" className="new-message-icon" />
       </h2>
 
       <div className="messages-content">
         <div className="contacts-panel">
           <div className="search-bar-contacts">
-            <img src="/placeholder-search.svg" alt="Поиск" />
+            <img src={searchIcon} alt="Поиск" />
             <input type="text" placeholder="Поиск..." />
           </div>
 
@@ -78,7 +86,7 @@ const Messages = () => {
                   <div className="contact-meta">
                     <div className="contact-time">{contact.time}</div>
                     {contact.unread > 0 && <div className="unread-count">{contact.unread}</div>}
-                    {contact.delivered && <img src="/placeholder-delivered.svg" alt="Доставлено" className="delivered-icon" />}
+                    {contact.delivered && <img src={likePlacedIcon} alt="Доставлено" className="delivered-icon" />}
                     {contact.voice && <img src="/placeholder-microphone-small.svg" alt="Голосовое сообщение" className="voice-icon" />}
                   </div>
                 </div>
@@ -90,16 +98,16 @@ const Messages = () => {
         <div className="chat-panel">
           <div className="chat-header">
             <div className="chat-contact-info">
-              <img src={activeChat.avatar} alt={activeChat.name} className="chat-avatar" />
+              <img src={userOneIcon} alt={activeChat.name} className="chat-avatar" />
               <div>
                 <div className="chat-contact-name">{activeChat.name}</div>
                 <div className="chat-contact-status">{activeChat.status}</div>
               </div>
             </div>
             <div className="chat-actions">
-              <img src="/placeholder-video-call.svg" alt="Видеозвонок" />
+              <img src={videoIcon} alt="Видеозвонок" />
               <img src="/placeholder-phone-call.svg" alt="Голосовой вызов" />
-              <img src="/placeholder-more-vertical.svg" alt="Дополнительные опции" />
+              <img src={otherThreeDotsIcon} alt="Дополнительные опции" />
             </div>
           </div>
 
@@ -125,9 +133,9 @@ const Messages = () => {
           </div>
 
           <div className="chat-input-area">
-            <img src="/placeholder-attachment.svg" alt="Вложение" className="input-icon" />
+            <img src={paperClipIcon} alt="Вложение" className="input-icon" />
             <input type="text" placeholder="Напишите что-нибудь..." />
-            <img src="/placeholder-send.svg" alt="Отправить" className="input-icon send-icon" />
+            <img src={sendIcon} alt="Отправить" className="input-icon send-icon" />
           </div>
         </div>
       </div>

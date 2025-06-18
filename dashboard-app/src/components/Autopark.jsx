@@ -7,6 +7,10 @@ import car5 from '../img_cars/toyota-innova-toyota-avanza-car-rush-toyota-seven-
 import car6 from '../img_cars/white car.png';
 import car7 from '../img_cars/2014-mercedes-benz-m-class-2012-mercedes-benz-m-class-2008-mercedes-benz-m-class-sport-utility-vehicle-mercedes-car-png-image-8230b0372dd015bcf5312eb17e2751ee.png';
 import car8 from '../img_cars/car-audi-a3-audi-a4-car-3822c2bc08e2c2bce1d8ead0e70c7ddb.png';
+import likePlacedIcon from '../assets/like placed.svg';
+import linealDisplayIcon from '../assets/lineal display.svg';
+import editProfileIcon from '../assets/edit profile.svg';
+import otherThreeDotsIcon from '../assets/other three dots.svg';
 
 const Autopark = ({ onSelectCar }) => {
   const carImages = [car1, car2, car3, car4, car5, car6, car7, car8];
@@ -42,7 +46,7 @@ const Autopark = ({ onSelectCar }) => {
           <div className="car-card" key={car.id} onClick={() => onSelectCar(car)}>
             <div className="card-header">
               <h3 className="car-model">{car.model}</h3>
-              <img src="/placeholder-heart.svg" alt="Add to Favorites" className="heart-icon" />
+              <img src={likePlacedIcon} alt="Add to Favorites" className="heart-icon" />
             </div>
             <p className="car-type">{car.type}</p>
             <div className="car-image-container">
@@ -50,11 +54,11 @@ const Autopark = ({ onSelectCar }) => {
             </div>
             <div className="car-details">
               <div className="detail-item">
-                <img src="/placeholder-seat.svg" alt="Seats" className="detail-icon" />
+                <img src={linealDisplayIcon} alt="Seats" className="detail-icon" />
                 <span>{car.seats}</span>
               </div>
               <div className="detail-item">
-                <img src="/placeholder-manual.svg" alt="Transmission" className="detail-icon" />
+                <img src={editProfileIcon} alt="Transmission" className="detail-icon" />
                 <span>{car.transmission}</span>
               </div>
               <div className="detail-item price">

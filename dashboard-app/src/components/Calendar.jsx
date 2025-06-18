@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Calendar.css';
+import calendarIcon from '../assets/dashboard icon.svg';
+import otherThreeDotsIcon from '../assets/other three dots.svg';
 
 const Calendar = () => {
   // State for calendar logic
@@ -86,15 +88,15 @@ const Calendar = () => {
       <div className="top-filters">
         <div className="dropdown">
           <span>Toyota</span>
-          <img src="/placeholder-dropdown.svg" alt="Dropdown" />
+          <img src={otherThreeDotsIcon} alt="Dropdown" />
         </div>
         <div className="dropdown">
           <span>Time</span>
-          <img src="/placeholder-dropdown.svg" alt="Dropdown" />
+          <img src={otherThreeDotsIcon} alt="Dropdown" />
         </div>
         <div className="dropdown">
           <span>Status</span>
-          <img src="/placeholder-dropdown.svg" alt="Dropdown" />
+          <img src={otherThreeDotsIcon} alt="Dropdown" />
         </div>
       </div>
 
@@ -154,10 +156,10 @@ const Calendar = () => {
           <div className="daily-view-header">
             <div className="view-selector">
               <button className="day-button">Day</button>
-              <img src="/placeholder-dropdown.svg" alt="Dropdown" />
+              <img src={otherThreeDotsIcon} alt="Dropdown" />
             </div>
             <div className="date-navigation">
-              <img src="/placeholder-calendar.svg" alt="Calendar Icon" className="calendar-icon" />
+              <img src={calendarIcon} alt="Calendar Icon" className="calendar-icon" />
               <span>Mar 15, 2022</span>
               <button>&lt;</button>
               <button>&gt;</button>

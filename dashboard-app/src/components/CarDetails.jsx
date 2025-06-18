@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import messagesEventIcon from '../assets/messages in the event log.svg';
+import exclamationEventIcon from '../assets/exclamation mark in event log.svg';
+import wrenchEventIcon from '../assets/wrench-in-event log.svg';
 
 const activityData = [
   { name: '01/6', km: 30 },
@@ -207,7 +210,7 @@ const CarDetails = ({ carId, car }) => {
         <div className="event-log-card">
           <h3>Журнал событий</h3>
           <div className="event-item">
-            <div className="event-icon"><img src="/placeholder-message-circle.svg" alt="Message"/></div>
+            <div className="event-icon"><img src={messagesEventIcon} alt="Message"/></div>
             <div className="event-content">
               <p className="event-date">Понедельник, 7 апреля 2025</p>
               <p className="event-description">Машина записана на плановое ТО</p>
@@ -215,7 +218,7 @@ const CarDetails = ({ carId, car }) => {
             </div>
           </div>
           <div className="event-item">
-            <div className="event-icon warning"><img src="/placeholder-alert-circle.svg" alt="Warning"/></div>
+            <div className="event-icon warning"><img src={exclamationEventIcon} alt="Warning"/></div>
             <div className="event-content">
               <p className="event-date">Четверг, 20 марта 2025</p>
               <p className="event-description">Требуется ремонт по отзыву LV 001</p>
@@ -223,7 +226,7 @@ const CarDetails = ({ carId, car }) => {
             </div>
           </div>
           <div className="event-item">
-            <div className="event-icon"><img src="/placeholder-tool.svg" alt="Tool"/></div>
+            <div className="event-icon"><img src={wrenchEventIcon} alt="Tool"/></div>
             <div className="event-content">
               <p className="event-date">Вторник, 13 августа 2024</p>
               <p className="event-description">Техническое обслуживание завершено</p>

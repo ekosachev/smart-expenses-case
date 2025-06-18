@@ -24,6 +24,17 @@ import car5 from './img_cars/toyota-innova-toyota-avanza-car-rush-toyota-seven-c
 import car6 from './img_cars/white car.png';
 import car7 from './img_cars/2014-mercedes-benz-m-class-2012-mercedes-benz-m-class-2008-mercedes-benz-m-class-sport-utility-vehicle-mercedes-car-png-image-8230b0372dd015bcf5312eb17e2751ee.png';
 import car8 from './img_cars/car-audi-a3-audi-a4-car-3822c2bc08e2c2bce1d8ead0e70c7ddb.png';
+import fuelIcon from './assets/fuel.svg';
+import taxesIcon from './assets/taxes.svg';
+import repairIcon from './assets/repair.svg';
+import otherIcon from './assets/other.svg';
+import dashboardIcon from './assets/dashboard icon.svg';
+import homeIcon from './assets/home.svg';
+import messagesIcon from './assets/messages.svg';
+import settingsIcon from './assets/settings.svg';
+import signOutIcon from './assets/sign out.svg';
+import notificationIcon from './assets/notification.svg';
+import userOneIcon from './assets/user one.svg';
 import './App.css'
 
 function App() {
@@ -175,22 +186,22 @@ function App() {
         {/* Основные виджеты */}
         <section className="widgets-grid">
           <div className="widget fuel" onClick={() => handleWidgetClick('fuel')}> 
-            <img src="/placeholder-fuel.svg" alt="Иконка Топлива" />
+            <img src={fuelIcon} alt="Иконка Топлива" />
             <h3>Топливо</h3>
             <CircularProgressBar percentage={45} color="#4facfe" />
           </div>
           <div className="widget taxes" onClick={() => handleWidgetClick('taxes')}> 
-            <img src="/placeholder-taxes.svg" alt="Иконка Налогов" />
+            <img src={taxesIcon} alt="Иконка Налогов" />
             <h3>Налоги</h3>
             <CircularProgressBar percentage={50} color="#f06292" />
           </div>
           <div className="widget repair" onClick={() => handleWidgetClick('repair')}> 
-            <img src="/placeholder-repair.svg" alt="Иконка Ремонта" />
+            <img src={repairIcon} alt="Иконка Ремонта" />
             <h3>Ремонт</h3>
             <CircularProgressBar percentage={9} color="#a770ef" />
           </div>
           <div className="widget other" onClick={() => handleWidgetClick('other')}> 
-            <img src="/placeholder-other.svg" alt="Иконка Прочее" />
+            <img src={otherIcon} alt="Иконка Прочее" />
             <h3>Прочее</h3>
             <CircularProgressBar percentage={25} color="#ffd700" />
           </div>
@@ -307,7 +318,7 @@ function App() {
             <nav className="nav-menu">
               <ul>
                 <li onClick={() => navigate('/')}>
-                  <img src="/placeholder-dashboard.svg" alt="Дашборд Иконка" />
+                  <img src={dashboardIcon} alt="Дашборд Иконка" />
                   <span>Дашборд</span>
                 </li>
                 <li onClick={() => navigate('/autopark')}>
@@ -315,11 +326,11 @@ function App() {
                   <span>Автопарк</span>
                 </li>
                 <li onClick={() => navigate('/calendar')}>
-                  <img src="/placeholder-calendar.svg" alt="Календарь Иконка" />
+                  <img src={homeIcon} alt="Календарь Иконка" />
                   <span>Calendar</span>
                 </li>
                 <li onClick={() => navigate('/messages')}>
-                  <img src="/placeholder-messages.svg" alt="Сообщения Иконка" />
+                  <img src={messagesIcon} alt="Сообщения Иконка" />
                   <span>Messages</span>
                 </li>
                 <li onClick={() => navigate('/api-test')}>
@@ -335,11 +346,11 @@ function App() {
             <div className="settings-logout">
               <ul>
                 <li onClick={() => navigate('/settings')}>
-                  <img src="/placeholder-settings.svg" alt="Настройки Иконка" />
+                  <img src={settingsIcon} alt="Настройки Иконка" />
                   <span>Settings</span>
                 </li>
                 <li>
-                  <img src="/placeholder-logout.svg" alt="Выход Иконка" />
+                  <img src={signOutIcon} alt="Выход Иконка" />
                   <span>Log out</span>
                 </li>
               </ul>
@@ -350,11 +361,11 @@ function App() {
             <header className="top-bar">
               <div className="search-bar">
                 <input type="text" placeholder="Search or type" />
-                <img src="/placeholder-search.svg" alt="Иконка Поиска" />
+                <img src={otherIcon} alt="Иконка Поиска" />
               </div>
               <div className="user-profile">
-                <img src="/placeholder-bell.svg" alt="Иконка Уведомлений" />
-                <img src="/placeholder-user.svg" alt="Иконка Пользователя" />
+                <img src={notificationIcon} alt="Иконка Уведомлений" />
+                <img src={userOneIcon} alt="Иконка Пользователя" />
                 <span></span> {/* Имя пользователя или другая информация */}
               </div>
             </header>
