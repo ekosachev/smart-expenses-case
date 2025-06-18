@@ -1,0 +1,1078 @@
+/* Общие стили */
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F0F2F5; /* Светло-серый фон, ближе к белому */
+  color: #333;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background-color: #B6D9FC; /* Светло-голубой фон контейнера */
+}
+
+/* Боковая панель */
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  padding: 20px 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar .logo {
+  display: flex;
+  align-items: center;
+  padding: 0 20px 30px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.sidebar .logo img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.sidebar .logo span {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.sidebar .nav-menu ul,
+.sidebar .settings-logout ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .nav-menu li,
+.sidebar .settings-logout li {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  color: #555;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar .nav-menu li:hover,
+.sidebar .settings-logout li:hover {
+  background-color: #E6F7FF; /* Светло-голубой при наведении */
+  color: #1D92C5; /* Плотный голубой текст при наведении */
+  transform: translateX(5px);
+}
+
+.sidebar .nav-menu li.active {
+  background-color: #82C4F8; /* Голубой для активного элемента */
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.sidebar .nav-menu li img,
+.sidebar .settings-logout li img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  filter: grayscale(100%); /* Для плейсхолдеров иконок */
+}
+
+.sidebar .nav-menu li.active img {
+  filter: brightness(0) invert(1); /* Белый для активных иконок */
+}
+
+.sidebar .settings-logout {
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Анимация появления основного контента */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Основной контент */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Верхний бар */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+}
+
+.top-bar .search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 400px;
+}
+
+.top-bar .search-bar input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #555;
+  background-color: #f0f2f5;
+}
+
+.top-bar .search-bar input::placeholder {
+  color: #aaa;
+}
+
+.top-bar .search-bar input:focus {
+  border-color: #1D92C5; /* Плотный голубой при фокусе */
+  box-shadow: 0 0 0 3px rgba(29, 146, 197, 0.25);
+  background-color: #fff;
+}
+
+.top-bar .search-bar img {
+  position: absolute;
+  left: 15px;
+  width: 18px;
+  height: 18px;
+  filter: grayscale(100%);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.top-bar .user-profile {
+  display: flex;
+  align-items: center;
+}
+
+.top-bar .user-profile img {
+  width: 28px;
+  height: 28px;
+  margin-left: 20px;
+  cursor: pointer;
+  filter: grayscale(100%);
+}
+
+.top-bar .user-profile img:last-of-type {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+/* Сетка виджетов */
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.widget {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px; /* Фиксированная высота для единообразия */
+}
+
+.widget:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.widget img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.widget h3 {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.widget .percentage-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  margin-top: 15px;
+}
+
+.widget.fuel .percentage-circle {
+  background: linear-gradient(135deg, #6BFCBA 0%, #B6D9FC 100%); /* Градиент знака */
+}
+
+.widget.taxes .percentage-circle {
+  background: linear-gradient(135deg, #82C4F8 0%, #1D92C5 100%); /* Оттенки голубого */
+}
+
+.widget.repair .percentage-circle {
+  background: linear-gradient(135deg, #B6D9FC 0%, #6BFCBA 100%); /* Легкий градиент */
+}
+
+.widget.other .percentage-circle {
+  background-color: #F79023; /* Оранжевый акцент */
+}
+
+/* Секции статистики и использования */
+.mileage-stats,
+.car-usage {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+}
+
+.mileage-stats h3,
+.car-usage h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+.time-filters {
+  margin-bottom: 20px;
+}
+
+.time-filters button {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.time-filters button.active {
+  background-color: #007bff;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.chart-placeholder {
+  background-color: #ffffff; /* Белый фон */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #888;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.car-usage .date {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+/* Рекомендации по автомобилям */
+.car-recommendations {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.car-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.car-card p:first-child {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.recommendation-low-red {
+  color: #dc3545; /* Красный цвет для низких рекомендаций (<=25%) */
+}
+
+.recommendation-low-yellow {
+  color: #ffc107; /* Желтый цвет для средних рекомендаций (26%-50%) */
+}
+
+.car-image-placeholder {
+  width: 100%;
+  height: 120px;
+  background-color: #ffffff; /* Белый фон для плейсхолдера изображения */
+  border-radius: 8px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Обрезаем, если изображение выходит за границы */
+}
+
+.car-image-recommendation {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: none; /* Убираем grayscale, если был применен к плейсхолдеру */
+}
+
+.car-card h4 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.car-card p:nth-of-type(2),
+.car-card p:nth-of-type(3) {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Стили для страницы Автопарк */
+.autopark-page {
+  width: 100%;
+}
+
+.autopark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.autopark-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+.autopark-header .controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.autopark-header .filters .filter-btn {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #555;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.autopark-header .filters .filter-btn:hover {
+  background-color: #f0f2f5;
+  border-color: #c0c0c0;
+}
+
+.autopark-header .view-options {
+  display: flex;
+  gap: 10px;
+  background-color: #ffffff;
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.autopark-header .view-options .view-icon {
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.autopark-header .view-options .view-icon.active {
+  background-color: #8884d8; /* Цвет из примера */
+  filter: invert(1) brightness(200%);
+}
+
+/* Сетка автомобилей */
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.car-grid .car-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.car-grid .car-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.car-grid .car-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.car-grid .car-card .car-model {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+  text-decoration: underline; /* Как на картинке */
+  text-underline-offset: 4px;
+}
+
+.car-grid .car-card .heart-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  filter: grayscale(100%);
+  transition: filter 0.2s ease;
+}
+
+.car-grid .car-card .heart-icon.active {
+  filter: none; /* Активное сердце */
+  fill: red;
+  stroke: red;
+}
+
+.car-grid .car-card .car-type {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.car-grid .car-card .car-image-container {
+  width: 100%;
+  height: 150px; /* Увеличил высоту для лучшего отображения */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.car-grid .car-card .car-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(100%); /* Для плейсхолдера */
+}
+
+.car-grid .car-card .car-details {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.car-grid .car-card .detail-item {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  color: #555;
+}
+
+.car-grid .car-card .detail-item .detail-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  filter: grayscale(100%);
+}
+
+.car-grid .car-card .detail-item.price span {
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+}
+
+/* Стили для страницы сведений об автомобиле */
+.car-details-page {
+  width: 100%;
+  padding: 0;
+}
+
+.car-details-page h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.car-details-page .car-overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Изменено, чтобы car-stats-card был в 2 раза уже картинки */
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.car-details-page .car-stats-card {
+  background: linear-gradient(to right, #0165C0, #00C1DC); /* Градиент как у кнопки */
+  color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.car-details-page .car-stats-card .stat-item {
+  text-align: center;
+}
+
+.car-details-page .car-stats-card .stat-item h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  opacity: 0.8;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: #ffffff; /* Белый цвет для h4 */
+}
+
+.car-details-page .car-stats-card .stat-item span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.car-details-page .car-image-large {
+  background-color: #ffffff; /* Белый фон */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.car-details-page .car-image-large img {
+  width: 100%;
+  height: auto;
+  max-height: 300px; /* Adjust as needed */
+  object-fit: contain;
+  filter: grayscale(100%);
+}
+
+.car-details-page .car-activity-card {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  grid-column: span 2; /* Растянуть на всю ширину */
+}
+
+.car-details-page .car-activity-card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+.car-details-page .car-activity-card .driven-today {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.car-details-page .car-activity-card .today-km {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.car-details-page .car-additional-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.car-details-page .event-log-card,
+.car-details-page .available-sensors-card,
+.car-details-page .reminder-card {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.car-details-page .event-log-card h3,
+.car-details-page .available-sensors-card h3,
+.car-details-page .reminder-card h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
+}
+
+.car-details-page .event-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.car-details-page .event-item .event-icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: rgba(107, 252, 186, 0.2); /* Полупрозрачный светло-зеленый */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.car-details-page .event-item .event-icon img {
+  width: 20px;
+  height: 20px;
+  filter: grayscale(100%);
+}
+
+.car-details-page .event-item .event-icon.warning {
+  background-color: #fff0f6;
+}
+
+.car-details-page .event-item .event-icon.warning img {
+  filter: none; /* Для красного предупреждения */
+  stroke: #ff7875;
+}
+
+.car-details-page .event-item .event-content p {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.car-details-page .event-item .event-content .event-date {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.car-details-page .event-item .event-content .event-description {
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.car-details-page .event-item .event-content .event-status {
+  background-color: rgba(107, 252, 186, 0.2); /* Полупрозрачный светло-зеленый */
+  color: #6BFCBA; /* Светло-зеленый */
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.car-details-page .event-item .event-content .event-link {
+  color: #007bff;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.car-details-page .available-sensors-card .sensor-filter button {
+  background-color: #f0f2f5;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.car-details-page .available-sensors-card .sensor-filter img {
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+  filter: grayscale(100%);
+}
+
+.car-details-page .sensor-list .sensor-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.car-details-page .sensor-list .sensor-item input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #007bff;
+}
+
+.car-details-page .sensor-list .sensor-item label {
+  flex-grow: 1;
+  font-size: 15px;
+  color: #333;
+}
+
+.car-details-page .sensor-list .sensor-item img {
+  width: 24px;
+  height: 24px;
+  filter: grayscale(100%);
+}
+
+.car-details-page .available-sensors-card .see-all-btn {
+  background-color: #e6f7ff;
+  color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.car-details-page .available-sensors-card .see-all-btn:hover {
+  background-color: #cceeff;
+}
+
+.car-details-page .reminder-card .add-new-btn {
+  background-color: #8884d8; /* Фиолетовый из графика */
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.car-details-page .reminder-card .add-new-btn:hover {
+  background-color: #6a66b0;
+}
+
+.car-details-page .reminder-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.car-details-page .reminder-table th,
+.car-details-page .reminder-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.car-details-page .reminder-table th {
+  color: #777;
+  font-weight: 500;
+}
+
+.car-details-page .reminder-table td {
+  color: #333;
+}
+
+.car-details-page .reminder-table td.status-completed {
+  color: #38a169;
+  font-weight: 600;
+}
+
+/* Стили для страницы графиков */
+.charts-page-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.charts-page-container h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.chart-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.chart-card h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Стили для компонента выбора дат и статистики */
+.date-range-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.date-inputs {
+  display: flex;
+  gap: 15px;
+  flex-grow: 1;
+}
+
+.date-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-input label {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+.date-input input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.date-input input[type="date"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.show-statistics-btn,
+.download-statistics-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.show-statistics-btn {
+  background: linear-gradient(to right, #0165C0, #00C1DC); /* Градиент знака */
+}
+
+.show-statistics-btn:hover {
+  opacity: 0.9; /* Немного затемняем при наведении */
+}
+
+.show-statistics-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.download-statistics-btn {
+  background: linear-gradient(to right, #0165C0, #00C1DC); /* Градиент знака */
+  margin-left: 15px;
+}
+
+.download-statistics-btn:hover {
+  opacity: 0.9; /* Немного затемняем при наведении */
+}
+
+/* Стили для страницы статистики по категориям */
+.category-statistics-page {
+  width: 100%;
+  padding: 0;
+}
+
+.category-statistics-page h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.chart-selection-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+}
+
+.chart-selection-card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #333;
+}
+
+.chart-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.chart-checkboxes div {
+  display: flex;
+  align-items: center;
+}
+
+.chart-checkboxes input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #007bff;
+  transform: scale(1.2);
+}
+
+.chart-checkboxes label {
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.chart-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.chart-card h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.statistics-display-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.statistics-display-card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+}
+
+.statistics-display-card p {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #555;
+}
+
+.statistics-display-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.statistics-display-card li {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #444;
+}
+
+.show-ai-recommendations-btn {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* Предотвращает перенос текста */
+}
+
+.show-ai-recommendations-btn:hover {
+  background-color: #0056b3;
+}
