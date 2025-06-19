@@ -38,6 +38,7 @@ import userOneIcon from './assets/user one.svg';
 import linealDisplayIcon from './assets/lineal display.svg';
 import paperClipIcon from './assets/paper clip attechment.svg';
 import autoIcon from './assets/auto.svg';
+import pprLogo from './assets/ppr logo.svg';
 import './App.css'
 
 function App() {
@@ -315,7 +316,7 @@ function App() {
           <aside className="sidebar">
             {/* Боковая панель */}
             <div className="logo">
-              <img src="/src/assets/ppr logo.svg" alt="ППР Logo" />
+              <img src={pprLogo} alt="ППР Logo" />
               <span>ППР</span>
             </div>
             <nav className="nav-menu">

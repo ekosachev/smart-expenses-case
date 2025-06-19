@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
+import pprLogo from '../assets/ppr logo.svg';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const Register = () => {
         <div className="register-card">
           <div className="register-header">
             <div className="logo-section">
-              <img src="/src/assets/ppr logo.svg" alt="ППР Logo" className="logo-icon" />
+              <img src={pprLogo} alt="ППР Logo" className="logo-icon" />
               <h1>ППР</h1>
             </div>
             <p className="register-subtitle">Управление расходами на автопарк</p>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import pprLogo from '../assets/ppr logo.svg';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const Login = () => {
         <div className="login-card">
           <div className="login-header">
             <div className="logo-section">
-              <img src="/src/assets/ppr logo.svg" alt="ППР Logo" className="logo-icon" />
+              <img src={pprLogo} alt="ППР Logo" className="logo-icon" />
               <h1>ППР</h1>
             </div>
             <p className="login-subtitle">Добро пожаловать обратно!</p>

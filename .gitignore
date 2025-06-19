@@ -1,5 +1,3 @@
-db.env
 generate bd/venv
 __pycache__
-app/.env
 app/venv
