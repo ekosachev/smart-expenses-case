@@ -10,7 +10,6 @@ class VehicleCSVRow(BaseModel):
     model: str
     year: int
     vehicle_type: VehicleType
-    fuel_type: str
     current_mileage: Optional[int]
     carrying_capacity: Optional[int]
     fuel_consumption_rate: Optional[float]
@@ -22,7 +21,6 @@ class ExpenseCSVRow(BaseModel):
     license_plate: str
     category_name: str
     description: str
-    driver_id: int
 
 
 class ImportResult(BaseModel):

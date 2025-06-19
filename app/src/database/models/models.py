@@ -153,7 +153,6 @@ class Expense(Base):
     # Связи с другими сущностями
     category_id: Mapped[int | None] = mapped_column(ForeignKey("expense_categories.id"))
     vehicle_id: Mapped[int | None] = mapped_column(ForeignKey("vehicles.id"))
-    driver_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
     created_by: Mapped[int] = mapped_column(ForeignKey("users.id"))
     approver_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
 
@@ -169,9 +168,6 @@ class Expense(Base):
     company: Mapped["Company"] = relationship(back_populates="expenses")
     category: Mapped["ExpenseCategory"] = relationship()
     vehicle: Mapped["Vehicle"] = relationship(back_populates="expenses")
-    driver: Mapped["User"] = relationship(
-        back_populates="expenses", foreign_keys=[driver_id]
-    )
     creator: Mapped["User"] = relationship(foreign_keys=[created_by])
     approver: Mapped["User"] = relationship(foreign_keys=[approver_id])
 
@@ -190,8 +186,4 @@ class User(Base):
 
     employments: Mapped[Set["Company"]] = relationship(
         secondary="companies_to_users", back_populates="employees"
-    )
-
-    expenses: Mapped[Set["Expense"]] = relationship(
-        back_populates="driver", foreign_keys=[Expense.driver_id]
     )

@@ -10,11 +10,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models.models import ExpenseCategory
+from src.logs import get_logger
 from src.schemas.expense import ExpenseCreate
 from src.schemas.import_schemas import ExpenseCSVRow, ImportResult, VehicleCSVRow
 from src.schemas.vehicle import VehicleCreate
 from src.services.expense import ExpenseService
 from src.services.vehicle import VehicleService
+
+logger = get_logger(__name__)
 
 
 class ImportService:
@@ -28,9 +31,11 @@ class ImportService:
             try:
                 await import_func(row, *args)
                 result.success_count += 1
+                logger.info(f"Success {result.success_count}")
             except Exception as e:
                 result.error_count += 1
                 result.errors.append({"row": row_num, "error": str(e), "data": row})
+                logger.warning(f"Import error: {str(e)}")
         return result
 
     async def import_vehicles(
@@ -123,7 +128,6 @@ class ImportService:
                     expense_date=expense_data.expense_date,
                     category_id=category_id,
                     vehicle_id=vehicle_id,
-                    driver_id=expense_data.driver_id,
                     description=expense_data.description,
                     company_id=company_id,
                 ),

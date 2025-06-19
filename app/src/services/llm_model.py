@@ -1,11 +1,31 @@
-import asyncio
 import json
-import os
-import dotenv
-from dotenv import load_dotenv
+from fastapi import HTTPException
 import requests
 from typing import Dict, Any
 
+from src.logs import get_logger
+from src.params.config import config
+from src.schemas.expense_query import ExpenseQueryResponse
+from src.services.md_to_pdf import convert_md_to_pdf
+
+logger = get_logger(__name__)
+
+
+async def get_llm_analysis(statistics: ExpenseQueryResponse) -> str:
+    # Создаем экземпляр LLM модел
+    rag_model = LLMModel()
+
+    # Получаем анализ расходов
+    analysis = rag_model.analyze_expenses(statistics.model_dump(mode="json"))
+    logger.info(f"length of md content: {len(analysis)}")
+
+    # Сохраняем результат в текстовый файл
+    input_path = "analysis.md"
+    output_path = "analysis.pdf"
+    with open(input_path, "w") as f:
+        f.write(analysis)
+    convert_md_to_pdf(input_path, output_path)
+    return output_path
 
 class LLMModel:
     def __init__(self):
