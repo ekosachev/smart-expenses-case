@@ -11,8 +11,8 @@ router = APIRouter(prefix="/company", tags=["Companies"])
 @router.post("/", response_model=CompanyData, status_code=status.HTTP_201_CREATED)
 async def company_create(
     company_data: CompanyCreate,
-    session=Depends(get_current_user),
-    current_user=Depends(get_session),
+    session=Depends(get_session),
+    current_user=Depends(get_current_user),
 ):
     service = CompanyService()
     return await service.create_entity(session, company_data)

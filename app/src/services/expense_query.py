@@ -38,6 +38,9 @@ async def expense_query(
     if data.vehicle_ids is not None:
         expenses = [e for e in expenses if e.vehicle_id in data.vehicle_ids]
 
+    if len(expenses) == 0:
+        raise ValueError("Нет транзаций за указанный период")
+
     period_length: timedelta
     if data.group_by == QueryGroupPeriod.day:
         period_length = timedelta(days=1)
@@ -99,10 +102,12 @@ async def expense_query(
         total_expenses=sum(map(lambda e: e.amount, expenses)),
         expenses_by_period=[
             ExpensesForTimePeriod(
-                min_expense=min(e.amount for e in expenses),
-                max_expense=max(e.amount for e in expenses),
-                average_expense=sum(e.amount for e in expenses) / len(expenses),
-                total_expenses=sum(e.amount for e in expenses),
+                min_expense=min(e.amount for e in expenses) if expenses else 0,
+                max_expense=max(e.amount for e in expenses) if expenses else 0,
+                average_expense=sum(e.amount for e in expenses) / len(expenses)
+                if expenses
+                else 0,
+                total_expenses=sum(e.amount for e in expenses) if expenses else 0,
                 time_period_start=start_date,
                 time_period_end=end_date,
             )
@@ -113,10 +118,12 @@ async def expense_query(
         ],
         expenses_by_category=[
             ExpensesForCategory(
-                min_expense=min(e.amount for e in expenses),
-                max_expense=max(e.amount for e in expenses),
-                average_expense=sum(e.amount for e in expenses) / len(expenses),
-                total_expenses=sum(e.amount for e in expenses),
+                min_expense=min(e.amount for e in expenses) if expenses else 0,
+                max_expense=max(e.amount for e in expenses) if expenses else 0,
+                average_expense=sum(e.amount for e in expenses) / len(expenses)
+                if expenses
+                else 0,
+                total_expenses=sum(e.amount for e in expenses) if expenses else 0,
                 category_name=category_name,
             )
             for (category_name, expenses) in expenses_grouped_by_category.items()
@@ -125,10 +132,12 @@ async def expense_query(
         else None,
         expenses_by_vehicle=[
             ExpensesForVehicle(
-                min_expense=min(e.amount for e in expenses),
-                max_expense=max(e.amount for e in expenses),
-                average_expense=sum(e.amount for e in expenses) / len(expenses),
-                total_expenses=sum(e.amount for e in expenses),
+                min_expense=min(e.amount for e in expenses) if expenses else 0,
+                max_expense=max(e.amount for e in expenses) if expenses else 0,
+                average_expense=sum(e.amount for e in expenses) / len(expenses)
+                if expenses
+                else 0,
+                total_expenses=sum(e.amount for e in expenses) if expenses else 0,
                 license_plate=license_plate,
                 model=model,
                 make=make,

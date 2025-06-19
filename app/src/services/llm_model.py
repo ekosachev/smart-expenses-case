@@ -1,26 +1,31 @@
-from datetime import datetime
 import json
+from fastapi import HTTPException
 import requests
 from typing import Dict, Any
 
+from src.logs import get_logger
 from src.params.config import config
 from src.schemas.expense_query import ExpenseQueryResponse
+from src.services.md_to_pdf import convert_md_to_pdf
+
+logger = get_logger(__name__)
 
 
 async def get_llm_analysis(statistics: ExpenseQueryResponse) -> str:
-    # Создаем экземпляр LLM модели
+    # Создаем экземпляр LLM модел
     rag_model = LLMModel()
 
     # Получаем анализ расходов
-    analysis = rag_model.analyze_expenses(statistics.model_dump())
+    analysis = rag_model.analyze_expenses(statistics.model_dump(mode="json"))
+    logger.info(f"length of md content: {len(analysis)}")
 
-    dt = datetime.now()
-    filename = f"./expense_analysis_results/expenses_analysis_{dt.strftime('%Y%m%dT%h%m%s')}.md"
     # Сохраняем результат в текстовый файл
-    with open(filename, "w", encoding="utf-8") as file:
-        file.write(analysis)
-
-    return filename
+    input_path = "analysis.md"
+    output_path = "analysis.pdf"
+    with open(input_path, "w") as f:
+        f.write(analysis)
+    convert_md_to_pdf(input_path, output_path)
+    return output_path
 
 
 class LLMModel:
@@ -95,3 +100,4 @@ class LLMModel:
             return full_response
         except Exception as e:
             return f"Ошибка при анализе расходов: {str(e)}"
+

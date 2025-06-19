@@ -13,6 +13,7 @@ from src.routers.vehicle import router as vehicle_router
 from src.routers.expense_query import router as expense_query_router
 from src.routers.import_router import router as import_router
 from src.routers.role import router as role_router
+from src.routers.company import router as company_router
 
 logger = get_logger(__name__)
 
@@ -47,6 +48,7 @@ app.include_router(vehicle_router)
 app.include_router(expense_query_router)
 app.include_router(import_router)
 app.include_router(role_router)
+app.include_router(company_router)
 
 
 if __name__ == "__main__":
