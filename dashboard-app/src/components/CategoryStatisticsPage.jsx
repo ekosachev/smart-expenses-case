@@ -165,7 +165,7 @@ const CategoryStatisticsPage = () => {
             className="download-statistics-btn"
             onClick={handleDownloadStatistics}
           >
-            Скачать статистику
+            Скачать рекомендации
           </button>
         )}
       </div>
