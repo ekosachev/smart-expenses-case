@@ -16,14 +16,14 @@ import ApiTest from './components/ApiTest'
 import Register from './components/Register'
 import Login from './components/Login'
 import FileUpload from './components/FileUpload'
-import car1 from './img_cars/2014-mercedes-benz-m-class-2012-mercedes-benz-m-class-2008-mercedes-benz-m-class-sport-utility-vehicle-mercedes-car-png-image-8230b0372dd015bcf5312eb17e2751ee-1.png';
-import car2 from './img_cars/car-audi-a3-audi-a4-car-3822c2bc08e2c2bce1d8ead0e70c7ddb-1.png';
-import car3 from './img_cars/maruti-suzuki-dzire-car-suzuki-ertiga-swift-dzire-f8a7d4ae19bd1c349dc080d9081ffd31.png';
-import car4 from './img_cars/suzuki-ertiga-maruti-car-suzuki-ciaz-suzuki-dcac04d3f676c91c7ca6f2d195b86ff3.png';
-import car5 from './img_cars/toyota-innova-toyota-avanza-car-rush-toyota-seven-cars-a3650fca54041ac1aaae4fe013ac79ca 1.png';
-import car6 from './img_cars/white car.png';
-import car7 from './img_cars/2014-mercedes-benz-m-class-2012-mercedes-benz-m-class-2008-mercedes-benz-m-class-sport-utility-vehicle-mercedes-car-png-image-8230b0372dd015bcf5312eb17e2751ee.png';
-import car8 from './img_cars/car-audi-a3-audi-a4-car-3822c2bc08e2c2bce1d8ead0e70c7ddb.png';
+import car1 from './img_cars/car1.png';
+import car2 from './img_cars/car2.png';
+import car3 from './img_cars/car3.png';
+const car4 = car1;
+const car5 = car2; 
+const car6 = car3;
+const car7 = car1;
+const car8 = car2;
 import fuelIcon from './assets/fuel.svg';
 import taxesIcon from './assets/taxes.svg';
 import repairIcon from './assets/repair.svg';
@@ -71,7 +71,7 @@ function App() {
     navigate('/login');
   };
 
-  const carImages = [car1, car2, car3, car4, car5, car6, car7, car8];
+  const carImages = [car1, car2, car3];
 
   const mileageData = {
     day: [
