@@ -27,6 +27,19 @@ services:
     networks:
       - app-network
 
+
+  smart-expenses-frontend:
+    container_name: smart-expenses-frontend
+    build:
+      context: ./dashboard-app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - smart-expenses-backend
+    networks:
+      - app-network
+
   # caddy:
   #   image: caddy:alpine
   #   ports:

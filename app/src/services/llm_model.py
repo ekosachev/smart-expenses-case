@@ -27,10 +27,10 @@ async def get_llm_analysis(statistics: ExpenseQueryResponse) -> str:
     convert_md_to_pdf(input_path, output_path)
     return output_path
 
-
 class LLMModel:
     def __init__(self):
-        self.api_token = config.llm_api_key
+        load_dotenv()
+        self.api_token = os.getenv("API_LLM")
         self.base_url = "https://llm.chutes.ai/v1/chat/completions"
         self.headers = {
             "Authorization": f"Bearer {self.api_token}",
@@ -95,7 +95,7 @@ class LLMModel:
                                 )
                                 if content:
                                     full_response += content
-                    except Exception as _:
+                    except:
                         continue
             return full_response
         except Exception as e:
