@@ -66,6 +66,11 @@ function App() {
     setSelectedUsagePeriod(period);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   const carImages = [car1, car2, car3, car4, car5, car6, car7, car8];
 
   const mileageData = {
@@ -353,7 +358,7 @@ function App() {
                   <img src={settingsIcon} alt="Настройки Иконка" />
                   <span>Settings</span>
                 </li>
-                <li>
+                <li onClick={handleLogout}>
                   <img src={signOutIcon} alt="Выход Иконка" />
                   <span>Log out</span>
                 </li>
