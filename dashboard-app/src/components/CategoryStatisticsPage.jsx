@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { apiService } from '../services/api';
 import '../App.css'; // Assume App.css has general styles and button styles
 
 const categoryChartsData = {
@@ -86,21 +87,22 @@ const CategoryStatisticsPage = () => {
     });
   };
 
-  const handleShowStatistics = () => {
+  const handleShowStatistics = async () => {
     if (startDate && endDate) {
-      // Логика для получения реальных данных статистики по категории и датам
-      // Пока что это заглушка, использующая предопределенные данные
-      const dummyData = {
-        category: currentCategoryTitle,
-        period: `${startDate} - ${endDate}`,
-        totalAmount: `$${Math.floor(Math.random() * 10000)}`, // Пример случайных данных
-        transactions: [
-          { date: "2024-01-10", amount: "$50", description: "Заправка" },
-          { date: "2024-01-15", amount: "$30", description: "Оплата парковки" },
-        ],
-      };
-      setStatisticsData(dummyData);
-      setShowDownloadButton(true);
+      try {
+        // category из useParams — это строка, например 'fuel', 'taxes', ...
+        // Для универсальности передаём массив category_ids
+        const response = await apiService.getCategoryStatistics({
+          category_ids: [category],
+          start_date: startDate,
+          end_date: endDate
+        });
+        setStatisticsData(response);
+        setShowDownloadButton(true);
+      } catch (error) {
+        setStatisticsData({ error: 'Ошибка при получении статистики' });
+        setShowDownloadButton(false);
+      }
     } else {
       setShowDownloadButton(false);
       setStatisticsData(null);
@@ -185,18 +187,27 @@ const CategoryStatisticsPage = () => {
         </div>
       </div>
 
-      {statisticsData && (
+      {statisticsData && !statisticsData.error && (
         <div className="statistics-display-card">
           <h3>Статистика за выбранный период</h3>
-          <p>Категория: <strong>{statisticsData.category}</strong></p>
-          <p>Период: <strong>{statisticsData.period}</strong></p>
+          <p>Категория: <strong>{statisticsData.category || currentCategoryTitle}</strong></p>
+          <p>Период: <strong>{statisticsData.period || `${startDate} - ${endDate}`}</strong></p>
           <p>Общая сумма: <strong>{statisticsData.totalAmount}</strong></p>
-          <h4>Транзакции:</h4>
-          <ul>
-            {statisticsData.transactions.map((item, index) => (
-              <li key={index}>{item.date}: {item.amount} - {item.description}</li>
-            ))}
-          </ul>
+          {statisticsData.transactions && (
+            <>
+              <h4>Транзакции:</h4>
+              <ul>
+                {statisticsData.transactions.map((item, index) => (
+                  <li key={index}>{item.date}: {item.amount} - {item.description}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      )}
+      {statisticsData && statisticsData.error && (
+        <div className="statistics-display-card">
+          <p style={{color: 'red'}}>{statisticsData.error}</p>
         </div>
       )}
 

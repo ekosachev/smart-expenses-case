@@ -94,5 +94,22 @@ export const apiService = {
       console.error('Ошибка при получении ролей:', error);
       throw error;
     }
+  },
+
+  // Получение статистики по категориям
+  async getCategoryStatistics({ category_ids, start_date, end_date }) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/category_statistics/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ category_ids, start_date, end_date }),
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка при получении статистики по категориям:', error);
+      throw error;
+    }
   }
 }; 
