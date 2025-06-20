@@ -108,3 +108,41 @@ ORDER BY v.total_mileage DESC;
 `sql
 SELECT * FROM monthly_budget WHERE Год = '2024' ORDER BY Процент_от_плана DESC;`
 
+---
+
+## 📁 Структура проекта
+
+```
+smart-expenses-case/
+  ├── app/
+  │   ├── __main__.py
+  │   ├── alembic.ini
+  │   ├── app.dockerfile
+  │   ├── requirements.txt
+  │   └── src/
+  │       ├── database/
+  │       ├── logs.py
+  │       ├── params/
+  │       ├── routers/
+  │       ├── schemas/
+  │       └── services/
+  ├── dashboard-app/
+  │   ├── Dockerfile
+  │   ├── index.html
+  │   ├── package.json
+  │   └── src/
+  │       ├── assets/
+  │       ├── components/
+  │       ├── img_cars/
+  │       └── services/
+  ├── db.env
+  ├── docker-compose.yml
+  ├── files_for_import/
+  ├── img/
+  ├── LLM_doc/
+  ├── table_data/
+  └── README.md
+```
+
+> **Примечание:** В структуре показаны только основные директории и ключевые файлы для быстрого ознакомления с проектом.
+
