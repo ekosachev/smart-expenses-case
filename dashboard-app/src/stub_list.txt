@@ -1,0 +1,32 @@
+# Заглушки (фейковые данные) на фронте
+
+1. **dashboard-app/src/components/Autopark.jsx**
+   - Массив carData: 9 одинаковых машин Porsche 718 Cayman S с разными картинками, все данные захардкожены.
+
+2. **dashboard-app/src/components/CarDetails.jsx**
+   - Константа activityData: массив с пробегом по дням (захардкожен).
+   - Объект carInfo: если не передан car, используется Porsche 718 Cayman S с фиксированными данными.
+   - Функция handleShowStatistics: генерирует dummyStatistics — случайные значения расхода топлива, пробега и рекомендации.
+   - Таблица напоминаний (reminder-card): статичные строки.
+
+3. **dashboard-app/src/components/CategoryStatisticsPage.jsx**
+   - Объект categoryChartsData: все графики и данные по категориям (топливо, налоги, ремонт, прочее) — полностью захардкожены.
+
+4. **dashboard-app/src/components/ChartsPage.jsx**
+   - Объект sensorDataMap: все графики по датчикам (расход топлива, одометр, время работы, скорость, температура двигателя) — полностью захардкожены.
+
+5. **dashboard-app/src/components/Messages.jsx**
+   - activeChat: объект с сообщениями, все сообщения и контакты — захардкожены.
+   - pinnedContacts, allMessageContacts: массивы контактов — захардкожены.
+
+6. **dashboard-app/src/components/Calendar.jsx**
+   - dailyEvents, upcomingEvents: массивы событий — полностью захардкожены.
+   - currentMonth, activeDay: по умолчанию март 2022 и 16 число — для демо.
+
+7. **dashboard-app/src/components/Register.jsx** и **Login.jsx**
+   - handleSubmit: имитация отправки данных на сервер через setTimeout, реальной логики нет.
+
+8. **dashboard-app/src/components/Settings.jsx**
+   - profileSettings: значения профиля пользователя (адрес, email, фото и т.д.) — захардкожены.
+
+// Если потребуется подробный код каждого участка — сообщите! 
