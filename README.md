@@ -145,7 +145,6 @@ smart-expenses-case/
   ├── files_for_import/
   ├── img/
   ├── LLM_doc/
-  ├── table_data/
   └── README.md
 ```
 
