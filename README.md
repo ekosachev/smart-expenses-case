@@ -29,8 +29,6 @@ docker-compose up --build
 
 ![Алгоритм анализа](img/algorithm.png)
 
-![ИИ анализ](img/analyze.png)
-
 ---
 
 ## Фронтенд: современный и удобный интерфейс
