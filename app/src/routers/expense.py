@@ -98,5 +98,5 @@ async def get_expenses_by_vehicle(
 ):
     service = ExpenseService()
     return await service.get_expenses_by_vehicle(
-        session, vehicle_id, skip=skip, limit=limit
+        session, vehicle_id, offset=skip, limit=limit
     )
