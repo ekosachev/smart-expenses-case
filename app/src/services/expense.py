@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 
 from ..database.db import AsyncSession
 from ..database.expense import ExpenseRepository
-from .schemas.expense import ExpenseCreate, ExpenseData, ExpenseEdit
+from ..schemas.expense import ExpenseCreate, ExpenseData, ExpenseEdit
 from .expense_category import ExpenseCategoryService
 from .vehicle import VehicleService
 
