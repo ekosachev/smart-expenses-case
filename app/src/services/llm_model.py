@@ -2,7 +2,8 @@ import json
 from fastapi import HTTPException
 import requests
 from typing import Dict, Any
-
+from dotenv import load_dotenv
+import os
 from src.logs import get_logger
 from src.params.config import config
 from src.schemas.expense_query import ExpenseQueryResponse
@@ -26,6 +27,7 @@ async def get_llm_analysis(statistics: ExpenseQueryResponse) -> str:
         f.write(analysis)
     convert_md_to_pdf(input_path, output_path)
     return output_path
+
 
 class LLMModel:
     def __init__(self):
@@ -100,4 +102,3 @@ class LLMModel:
             return full_response
         except Exception as e:
             return f"Ошибка при анализе расходов: {str(e)}"
-
